@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 650" width="800" height="650">
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1a1a2e"/>
+      <stop offset="50%" style="stop-color:#16213e"/>
+      <stop offset="100%" style="stop-color:#1a1a2e"/>
+    </linearGradient>
+
+    <!-- Orange gradient for user query -->
+    <linearGradient id="orangeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+
+    <!-- Pink gradient -->
+    <linearGradient id="pinkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ec4899"/>
+      <stop offset="100%" style="stop-color:#be185d"/>
+    </linearGradient>
+
+    <!-- Purple gradient -->
+    <linearGradient id="purpleGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#6d28d9"/>
+    </linearGradient>
+
+    <!-- Neural pattern gradient -->
+    <linearGradient id="neuralGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#ec4899;stop-opacity:0.3"/>
+      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:0.5"/>
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0.3"/>
+    </linearGradient>
+
+    <!-- Glow filter -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Soft shadow -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="650" fill="url(#bgGradient)"/>
+
+  <!-- Subtle grid pattern -->
+  <g opacity="0.05">
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#fff" stroke-width="0.5"/>
+    </pattern>
+    <rect width="800" height="650" fill="url(#grid)"/>
+  </g>
+
+  <!-- Title -->
+  <text x="400" y="35" fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="600" text-anchor="middle" opacity="0.6">PATTERN 3</text>
+  <text x="400" y="60" fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" text-anchor="middle">Scenario Learning (SONA-First)</text>
+
+  <!-- User Query Box -->
+  <g filter="url(#shadow)">
+    <rect x="150" y="85" width="500" height="70" rx="12" fill="url(#orangeGradient)"/>
+    <text x="180" y="113" fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="600" opacity="0.9">USER QUERY</text>
+    <text x="400" y="140" fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="500" text-anchor="middle">"What pricing strategy should I use for my SaaS?"</text>
+  </g>
+
+  <!-- Arrow from query to SONA -->
+  <path d="M 400 155 L 400 185" stroke="#f59e0b" stroke-width="2" fill="none" marker-end="url(#arrowOrange)"/>
+  <defs>
+    <marker id="arrowOrange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#f59e0b"/>
+    </marker>
+  </defs>
+
+  <!-- SONA Pattern Recall Box -->
+  <g filter="url(#shadow)">
+    <rect x="80" y="195" width="640" height="310" rx="16" fill="#0f172a" stroke="#8b5cf6" stroke-width="2" opacity="0.95"/>
+    <rect x="80" y="195" width="640" height="40" rx="16" fill="url(#purpleGradient)"/>
+    <rect x="80" y="220" width="640" height="15" fill="url(#purpleGradient)"/>
+    <text x="400" y="222" fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" text-anchor="middle">SONA PATTERN RECALL</text>
+  </g>
+
+  <!-- Your Profile Node -->
+  <g filter="url(#glow)">
+    <rect x="120" y="265" width="140" height="80" rx="10" fill="url(#pinkGradient)"/>
+    <text x="190" y="300" fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" text-anchor="middle">Your Profile</text>
+    <text x="190" y="320" fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="10" text-anchor="middle" opacity="0.85">B2B SaaS, Seed Stage</text>
+    <text x="190" y="335" fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="10" text-anchor="middle" opacity="0.85">$50K MRR Target</text>
+  </g>
+
+  <!-- Neural Network Pattern Matching Visualization -->
+  <g opacity="0.8">
+    <!-- Connection lines with animation effect -->
+    <line x1="260" y1="290" x2="360" y2="275" stroke="url(#neuralGradient)" stroke-width="2"/>
+    <line x1="260" y1="305" x2="360" y2="305" stroke="url(#neuralGradient)" stroke-width="3"/>
+    <line x1="260" y1="320" x2="360" y2="335" stroke="url(#neuralGradient)" stroke-width="2"/>
+
+    <!-- Pattern nodes -->
+    <circle cx="310" cy="275" r="6" fill="#ec4899" filter="url(#glow)"/>
+    <circle cx="310" cy="305" r="8" fill="#8b5cf6" filter="url(#glow)"/>
+    <circle cx="310" cy="335" r="6" fill="#f59e0b" filter="url(#glow)"/>
+
+    <!-- Secondary connection lines -->
+    <line x1="360" y1="275" x2="460" y2="290" stroke="url(#neuralGradient)" stroke-width="2"/>
+    <line x1="360" y1="305" x2="460" y2="305" stroke="url(#neuralGradient)" stroke-width="3"/>
+    <line x1="360" y1="335" x2="460" y2="320" stroke="url(#neuralGradient)" stroke-width="2"/>
+
+    <!-- More pattern nodes -->
+    <circle cx="410" cy="285" r="5" fill="#ec4899" opacity="0.7"/>
+    <circle cx="410" cy="305" r="7" fill="#8b5cf6" opacity="0.8"/>
+    <circle cx="410" cy="325" r="5" fill="#f59e0b" opacity="0.7"/>
+  </g>
+
+  <!-- Pattern Matching Label -->
+  <text x="360" y="365" fill="#8b5cf6" font-family="system-ui, -apple-system, sans-serif" font-size="10" text-anchor="middle" font-weight="600">PATTERN MATCHING</text>
+
+  <!-- Similar Businesses Node -->
+  <g filter="url(#glow)">
+    <rect x="540" y="265" width="160" height="80" rx="10" fill="url(#orangeGradient)"/>
+    <text x="620" y="295" fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="13" font-weight="600" text-anchor="middle">Similar Businesses</text>
+    <text x="620" y="315" fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="10" text-anchor="middle" opacity="0.85">847 matching profiles</text>
+    <text x="620" y="330" fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="10" text-anchor="middle" opacity="0.85">94% confidence match</text>
+  </g>
+
+  <!-- Quote Bubble -->
+  <g>
+    <rect x="120" y="390" width="560" height="95" rx="12" fill="#1e293b"/>
+    <polygon points="200,390 220,370 240,390" fill="#1e293b"/>
+
+    <!-- Quote marks -->
+    <text x="140" y="425" fill="#8b5cf6" font-family="Georgia, serif" font-size="36" opacity="0.5">"</text>
+
+    <text x="170" y="430" fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-style="italic">
+      <tspan x="170" dy="0">Companies like yours that used </tspan>
+      <tspan fill="#f59e0b" font-weight="600">freemium</tspan>
+      <tspan> saw </tspan>
+      <tspan fill="#10b981" font-weight="600">23% better</tspan>
+    </text>
+    <text x="170" y="450" fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-style="italic">
+      <tspan>conversion than those starting with paid-only models...</tspan>
+    </text>
+
+    <!-- Source tag -->
+    <rect x="490" y="460" width="170" height="20" rx="4" fill="#8b5cf6" opacity="0.2"/>
+    <text x="575" y="474" fill="#8b5cf6" font-family="system-ui, -apple-system, sans-serif" font-size="10" text-anchor="middle">Based on 312 similar outcomes</text>
+  </g>
+
+  <!-- Arrow from SONA to Output -->
+  <path d="M 400 505 L 400 535" stroke="#8b5cf6" stroke-width="2" fill="none" marker-end="url(#arrowPurple)"/>
+  <defs>
+    <marker id="arrowPurple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#8b5cf6"/>
+    </marker>
+  </defs>
+
+  <!-- Output Box -->
+  <g filter="url(#shadow)">
+    <rect x="100" y="545" width="600" height="85" rx="12" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+    <text x="130" y="573" fill="#10b981" font-family="system-ui, -apple-system, sans-serif" font-size="12" font-weight="700">RESPONSE OUTPUT</text>
+
+    <!-- Output items -->
+    <g transform="translate(130, 590)">
+      <rect x="0" y="0" width="130" height="28" rx="6" fill="#10b981" opacity="0.15"/>
+      <circle cx="15" cy="14" r="4" fill="#10b981"/>
+      <text x="28" y="18" fill="#10b981" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500">Learned Patterns</text>
+    </g>
+
+    <g transform="translate(280, 590)">
+      <rect x="0" y="0" width="130" height="28" rx="6" fill="#f59e0b" opacity="0.15"/>
+      <circle cx="15" cy="14" r="4" fill="#f59e0b"/>
+      <text x="28" y="18" fill="#f59e0b" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500">Outcome Data</text>
+    </g>
+
+    <g transform="translate(430, 590)">
+      <rect x="0" y="0" width="130" height="28" rx="6" fill="#8b5cf6" opacity="0.15"/>
+      <circle cx="15" cy="14" r="4" fill="#8b5cf6"/>
+      <text x="28" y="18" fill="#8b5cf6" font-family="system-ui, -apple-system, sans-serif" font-size="11" font-weight="500">94% Confidence</text>
+    </g>
+  </g>
+
+  <!-- Decorative elements -->
+  <circle cx="50" cy="100" r="30" fill="#8b5cf6" opacity="0.05"/>
+  <circle cx="750" cy="550" r="50" fill="#ec4899" opacity="0.05"/>
+  <circle cx="720" cy="150" r="25" fill="#f59e0b" opacity="0.05"/>
+</svg>

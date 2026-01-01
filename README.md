@@ -28,32 +28,9 @@ This is **not just RAG** (Retrieval-Augmented Generation). RAG retrieves context
 
 KB-First leverages the full **RuVector** stack for intelligent applications:
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         THE INTELLIGENCE STACK                              │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐             │
-│  │      GNN        │  │    ATTENTION    │  │      SONA       │             │
-│  │   (Reasoning)   │  │   (Routing)     │  │   (Learning)    │             │
-│  │                 │  │                 │  │                 │             │
-│  │ Sees how things │  │ Knows which     │  │ Remembers what  │             │
-│  │ connect and     │  │ expert/approach │  │ worked and      │             │
-│  │ cascade         │  │ fits this query │  │ patterns that   │             │
-│  │                 │  │                 │  │ succeed         │             │
-│  └────────┬────────┘  └────────┬────────┘  └────────┬────────┘             │
-│           │                    │                    │                       │
-│           └────────────────────┼────────────────────┘                       │
-│                                │                                            │
-│                    ┌───────────▼───────────┐                               │
-│                    │     VECTOR SEARCH     │                               │
-│                    │     (Foundation)      │                               │
-│                    │  Semantic retrieval   │                               │
-│                    │  from knowledge base  │                               │
-│                    └───────────────────────┘                               │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
+<p align="center">
+  <img src="assets/intelligence-stack.svg" alt="The Intelligence Stack" width="800">
+</p>
 
 ### When to Use Each Technology
 
@@ -70,38 +47,9 @@ KB-First leverages the full **RuVector** stack for intelligent applications:
 
 KB-First applications are built through a rigorous 8-phase process:
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                        THE 8-PHASE BUILD PROCESS                            │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  Phase 1          Phase 2              Phase 3           Phase 4            │
-│  ┌──────┐         ┌──────┐             ┌──────┐          ┌──────┐          │
-│  │STORE │   ───►  │  KB  │    ───►     │SAVE &│   ───►   │ VIZ  │          │
-│  │SETUP │         │BUILD │             │VERIFY│          │      │          │
-│  └──────┘         └──────┘             └──────┘          └──────┘          │
-│                      │                                                      │
-│                      ├─ 2.1 Domain Scoping                                 │
-│                      ├─ 2.2 Perspective Expansion                          │
-│                      ├─ 2.3 Expert Discovery (100 experts)                 │
-│                      ├─ 2.4 Completeness Audit                             │
-│                      ├─ 2.5 Gap Filling                                    │
-│                      ├─ 2.6 Structure (≤9 nodes)                           │
-│                      ├─ 2.7 Recursive Depth                                │
-│                      └─ 2.8 Quality Loop (≥98/100)                         │
-│                                                                             │
-│  Phase 5          Phase 6              Phase 7           Phase 8            │
-│  ┌──────┐         ┌──────┐             ┌──────┐          ┌──────┐          │
-│  │ SDK  │   ───►  │SCAF- │    ───►     │BUILD │   ───►   │VERIFY│          │
-│  │LAYER │         │ FOLD │             │(ENF) │          │      │          │
-│  └──────┘         └──────┘             └──────┘          └──────┘          │
-│                                            │                                │
-│                                            └─ NO SHORTCUTS                 │
-│                                               NO HARDCODED VALUES          │
-│                                               ALL SOURCES TRACED           │
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
+<p align="center">
+  <img src="assets/build-process.svg" alt="The 8-Phase Build Process" width="800">
+</p>
 
 ### Phase Summary
 
@@ -125,100 +73,38 @@ Every KB-First application fits one of four patterns. The pattern determines you
 ### Pattern 1: Decision Web (GNN-First)
 **Use when:** Changing one variable affects many others
 
-```
-Examples: Retirement planning, medical treatment, portfolio construction
+*Examples: Retirement planning, medical treatment, portfolio construction*
 
-User: "What if I take Social Security at 70?"
-        │
-        ▼
-    ┌───────────────────────────────────────────────┐
-    │              GNN DECISION GRAPH               │
-    │                                               │
-    │   SS Age ──affects──► Tax Bracket            │
-    │     │                    │                    │
-    │     │                    ▼                    │
-    │     └──affects──► Roth Conversion Space      │
-    │                          │                    │
-    │                          ▼                    │
-    │                   Medicare Premium           │
-    └───────────────────────────────────────────────┘
-        │
-        ▼
-    Response with: cascade effects, similar patterns, scenario comparison
-```
+<p align="center">
+  <img src="assets/decision-web-gnn.svg" alt="GNN Decision Web Pattern" width="800">
+</p>
 
 ### Pattern 2: Combinatorial Routing (Attention-First)
 **Use when:** Queries need to go to different expert domains
 
-```
-Examples: Travel optimizer, customer support, resource allocation
+*Examples: Travel optimizer, customer support, resource allocation*
 
-User: "Find me cheap business class to Tokyo using points"
-        │
-        ▼
-    ┌───────────────────────────────────────────────┐
-    │              MoE EXPERT ROUTING               │
-    │                                               │
-    │   Query ──► Award Travel Expert (0.85)       │
-    │         ──► Cash Fares Expert (0.45)         │
-    │         ──► Positioning Expert (0.72)        │
-    │                                               │
-    │   Route to: Award + Positioning              │
-    └───────────────────────────────────────────────┘
-        │
-        ▼
-    Response with: multi-expert synthesis, optimal combinations
-```
+<p align="center">
+  <img src="assets/combinatorial-routing.svg" alt="MoE Expert Routing Pattern" width="800">
+</p>
 
 ### Pattern 3: Scenario Learning (SONA-First)
 **Use when:** "What worked for people like me?" is the core value
 
-```
-Examples: Business simulator, strategy advisor, personalized coaching
+*Examples: Business simulator, strategy advisor, personalized coaching*
 
-User: "What pricing strategy should I use for my SaaS?"
-        │
-        ▼
-    ┌───────────────────────────────────────────────┐
-    │              SONA PATTERN RECALL              │
-    │                                               │
-    │   Your Profile ──► Similar Businesses        │
-    │                          │                    │
-    │                          ▼                    │
-    │   "Companies like yours that used freemium   │
-    │    saw 23% better conversion..."             │
-    └───────────────────────────────────────────────┘
-        │
-        ▼
-    Response with: learned patterns, outcome data, confidence
-```
+<p align="center">
+  <img src="assets/scenario-learning-sona.svg" alt="SONA Pattern Recall" width="800">
+</p>
 
 ### Pattern 4: Continuous Optimization (Attention + SONA Loop)
 **Use when:** You need ongoing monitoring and adaptation
 
-```
-Examples: SEO optimizer, trading system, adaptive marketing
+*Examples: SEO optimizer, trading system, adaptive marketing*
 
-Weekly Cycle:
-        │
-        ▼
-    ┌───────────────────────────────────────────────┐
-    │           ATTENTION + SONA LOOP              │
-    │                                               │
-    │   Flash Attention ──► Scan content/competitors│
-    │          │                                    │
-    │          ▼                                    │
-    │   Cross Attention ──► Identify gaps          │
-    │          │                                    │
-    │          ▼                                    │
-    │   Deploy Changes ──► Track Results           │
-    │          │                                    │
-    │          ▼                                    │
-    │   SONA Learning ──► Remember what worked     │
-    │          │                                    │
-    │          └──────────► (Loop)                 │
-    └───────────────────────────────────────────────┘
-```
+<p align="center">
+  <img src="assets/continuous-optimization.svg" alt="Continuous Optimization Loop" width="800">
+</p>
 
 ---
 

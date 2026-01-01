@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <!-- Node gradients -->
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4ff"/>
+      <stop offset="100%" style="stop-color:#0099cc"/>
+    </linearGradient>
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#6d28d9"/>
+    </linearGradient>
+    <linearGradient id="orangeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+    <linearGradient id="pinkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ec4899"/>
+      <stop offset="100%" style="stop-color:#be185d"/>
+    </linearGradient>
+    <linearGradient id="queryGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1e3a5f"/>
+      <stop offset="100%" style="stop-color:#2d4a6f"/>
+    </linearGradient>
+    <linearGradient id="outputGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#134e4a"/>
+      <stop offset="100%" style="stop-color:#1a5f5a"/>
+    </linearGradient>
+    <linearGradient id="graphBoxGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e1e3f"/>
+      <stop offset="100%" style="stop-color:#151530"/>
+    </linearGradient>
+    <!-- Arrow gradient -->
+    <linearGradient id="arrowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00d4ff"/>
+      <stop offset="50%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#f59e0b"/>
+    </linearGradient>
+    <!-- Connection line gradients -->
+    <linearGradient id="connGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4ff"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="connGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4ff"/>
+      <stop offset="100%" style="stop-color:#f59e0b"/>
+    </linearGradient>
+    <linearGradient id="connGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#f59e0b"/>
+    </linearGradient>
+    <linearGradient id="connGrad4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#ec4899"/>
+    </linearGradient>
+    <!-- Filters -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.4"/>
+    </filter>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="nodeShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.5"/>
+    </filter>
+    <!-- Arrow markers -->
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#8b5cf6"/>
+    </marker>
+    <marker id="arrowheadCyan" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#00d4ff"/>
+    </marker>
+    <marker id="arrowheadOrange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowheadPink" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#ec4899"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="#1a1a2e"/>
+
+  <!-- Title -->
+  <text x="400" y="35" text-anchor="middle" fill="#ffffff" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="bold">PATTERN 1: DECISION WEB (GNN-FIRST)</text>
+
+  <!-- User Query Box -->
+  <rect x="150" y="55" width="500" height="50" rx="10" fill="url(#queryGrad)" stroke="#00d4ff" stroke-width="2" filter="url(#shadow)"/>
+  <text x="400" y="85" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="500">"What if I take Social Security at 70?"</text>
+
+  <!-- Arrow from query to graph -->
+  <path d="M400 105 L400 135" stroke="#00d4ff" stroke-width="2" fill="none"/>
+  <polygon points="400,145 394,132 406,132" fill="#00d4ff"/>
+
+  <!-- GNN Decision Graph Container -->
+  <rect x="100" y="150" width="600" height="320" rx="16" fill="url(#graphBoxGrad)" stroke="#3d3d6b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="400" y="180" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="16" font-weight="bold">GNN Decision Graph</text>
+  <line x1="150" y1="195" x2="650" y2="195" stroke="#3d3d6b" stroke-width="1"/>
+
+  <!-- Node: SS Age (top center) -->
+  <ellipse cx="400" cy="250" rx="70" ry="35" fill="url(#cyanGrad)" filter="url(#nodeShadow)"/>
+  <text x="400" y="255" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">SS Age</text>
+
+  <!-- Node: Tax Bracket (left middle) -->
+  <ellipse cx="230" cy="340" rx="75" ry="35" fill="url(#purpleGrad)" filter="url(#nodeShadow)"/>
+  <text x="230" y="345" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">Tax Bracket</text>
+
+  <!-- Node: Roth Conversion Space (right middle) -->
+  <ellipse cx="570" cy="340" rx="90" ry="35" fill="url(#orangeGrad)" filter="url(#nodeShadow)"/>
+  <text x="570" y="337" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="bold">Roth Conversion</text>
+  <text x="570" y="352" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="bold">Space</text>
+
+  <!-- Node: Medicare Premium (bottom center) -->
+  <ellipse cx="400" cy="430" rx="85" ry="35" fill="url(#pinkGrad)" filter="url(#nodeShadow)"/>
+  <text x="400" y="427" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="bold">Medicare</text>
+  <text x="400" y="442" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="12" font-weight="bold">Premium</text>
+
+  <!-- Connection: SS Age -> Tax Bracket -->
+  <path d="M345 270 Q280 300 270 305" stroke="url(#connGrad1)" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="275" y="280" fill="#a78bfa" font-family="system-ui, sans-serif" font-size="10" font-style="italic" transform="rotate(-30, 275, 280)">affects</text>
+
+  <!-- Connection: SS Age -> Roth Conversion Space -->
+  <path d="M455 270 Q520 300 530 305" stroke="url(#connGrad2)" stroke-width="3" fill="none" marker-end="url(#arrowheadOrange)"/>
+  <text x="520" y="280" fill="#fbbf24" font-family="system-ui, sans-serif" font-size="10" font-style="italic" transform="rotate(30, 520, 280)">affects</text>
+
+  <!-- Connection: Tax Bracket -> Roth Conversion Space -->
+  <path d="M305 340 L480 340" stroke="url(#connGrad3)" stroke-width="3" fill="none" marker-end="url(#arrowheadOrange)"/>
+  <text x="392" y="330" text-anchor="middle" fill="#c084fc" font-family="system-ui, sans-serif" font-size="10" font-style="italic">affects</text>
+
+  <!-- Connection: Roth Conversion Space -> Medicare Premium -->
+  <path d="M520 370 Q460 400 455 405" stroke="url(#connGrad4)" stroke-width="3" fill="none" marker-end="url(#arrowheadPink)"/>
+  <text x="510" y="400" fill="#f472b6" font-family="system-ui, sans-serif" font-size="10" font-style="italic" transform="rotate(45, 510, 400)">affects</text>
+
+  <!-- Arrow from graph to output -->
+  <path d="M400 470 L400 500" stroke="#43e97b" stroke-width="2" fill="none"/>
+  <polygon points="400,510 394,497 406,497" fill="#43e97b"/>
+
+  <!-- Output Box -->
+  <rect x="100" y="520" width="600" height="65" rx="12" fill="url(#outputGrad)" stroke="#43e97b" stroke-width="2" filter="url(#shadow)"/>
+  <text x="400" y="548" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">Response includes:</text>
+  <text x="400" y="570" text-anchor="middle" fill="#a7f3d0" font-family="system-ui, sans-serif" font-size="13">Cascade Effects  |  Similar Patterns  |  Scenario Comparison</text>
+</svg>

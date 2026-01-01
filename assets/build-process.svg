@@ -1,0 +1,145 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480">
+  <defs>
+    <linearGradient id="phase1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b6b"/>
+      <stop offset="100%" style="stop-color:#ee5a5a"/>
+    </linearGradient>
+    <linearGradient id="phase2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#feca57"/>
+      <stop offset="100%" style="stop-color:#ff9f43"/>
+    </linearGradient>
+    <linearGradient id="phase3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#48dbfb"/>
+      <stop offset="100%" style="stop-color:#0abde3"/>
+    </linearGradient>
+    <linearGradient id="phase4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1dd1a1"/>
+      <stop offset="100%" style="stop-color:#10ac84"/>
+    </linearGradient>
+    <linearGradient id="phase5" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5f27cd"/>
+      <stop offset="100%" style="stop-color:#341f97"/>
+    </linearGradient>
+    <linearGradient id="phase6" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#54a0ff"/>
+      <stop offset="100%" style="stop-color:#2e86de"/>
+    </linearGradient>
+    <linearGradient id="phase7" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff9ff3"/>
+      <stop offset="100%" style="stop-color:#f368e0"/>
+    </linearGradient>
+    <linearGradient id="phase8" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d2d3"/>
+      <stop offset="100%" style="stop-color:#01a3a4"/>
+    </linearGradient>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="480" fill="#0f0f23"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" fill="#ffffff" font-family="system-ui, sans-serif" font-size="22" font-weight="bold">THE 8-PHASE BUILD PROCESS</text>
+
+  <!-- Phase 1 -->
+  <rect x="30" y="60" width="90" height="90" rx="10" fill="url(#phase1)" filter="url(#glow)"/>
+  <text x="75" y="90" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="28" font-weight="bold">1</text>
+  <text x="75" y="115" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" font-weight="600">STORAGE</text>
+  <text x="75" y="130" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="system-ui, sans-serif" font-size="9">Setup</text>
+
+  <!-- Arrow 1-2 -->
+  <path d="M125 105 L155 105" stroke="#ff6b6b" stroke-width="3" fill="none" marker-end="url(#arrowRed)"/>
+  <polygon points="160,105 150,100 150,110" fill="#feca57"/>
+
+  <!-- Phase 2 -->
+  <rect x="165" y="60" width="90" height="90" rx="10" fill="url(#phase2)" filter="url(#glow)"/>
+  <text x="210" y="90" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="28" font-weight="bold">2</text>
+  <text x="210" y="115" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" font-weight="600">KB BUILD</text>
+  <text x="210" y="130" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="system-ui, sans-serif" font-size="9">Knowledge</text>
+
+  <!-- Arrow 2-3 -->
+  <polygon points="295,105 285,100 285,110" fill="#48dbfb"/>
+  <path d="M260 105 L290 105" stroke="#feca57" stroke-width="3" fill="none"/>
+
+  <!-- Phase 3 -->
+  <rect x="300" y="60" width="90" height="90" rx="10" fill="url(#phase3)" filter="url(#glow)"/>
+  <text x="345" y="90" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="28" font-weight="bold">3</text>
+  <text x="345" y="115" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" font-weight="600">PERSIST</text>
+  <text x="345" y="130" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="system-ui, sans-serif" font-size="9">Save & Verify</text>
+
+  <!-- Arrow 3-4 -->
+  <polygon points="430,105 420,100 420,110" fill="#1dd1a1"/>
+  <path d="M395 105 L425 105" stroke="#48dbfb" stroke-width="3" fill="none"/>
+
+  <!-- Phase 4 -->
+  <rect x="435" y="60" width="90" height="90" rx="10" fill="url(#phase4)" filter="url(#glow)"/>
+  <text x="480" y="90" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="28" font-weight="bold">4</text>
+  <text x="480" y="115" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" font-weight="600">VISUALIZE</text>
+  <text x="480" y="130" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="system-ui, sans-serif" font-size="9">3D Tree</text>
+
+  <!-- Curved arrow down -->
+  <path d="M530 105 Q560 105 560 135 L560 230 Q560 260 530 260" stroke="#1dd1a1" stroke-width="3" fill="none" stroke-dasharray="8,4"/>
+
+  <!-- Phase 5 -->
+  <rect x="435" y="260" width="90" height="90" rx="10" fill="url(#phase5)" filter="url(#glow)"/>
+  <text x="480" y="290" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="28" font-weight="bold">5</text>
+  <text x="480" y="315" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" font-weight="600">SDK LAYER</text>
+  <text x="480" y="330" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="system-ui, sans-serif" font-size="9">Integration</text>
+
+  <!-- Arrow 5-6 -->
+  <polygon points="430,305 420,300 420,310" fill="#54a0ff" transform="rotate(180 425 305)"/>
+  <path d="M395 305 L430 305" stroke="#5f27cd" stroke-width="3" fill="none"/>
+
+  <!-- Phase 6 -->
+  <rect x="300" y="260" width="90" height="90" rx="10" fill="url(#phase6)" filter="url(#glow)"/>
+  <text x="345" y="290" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="28" font-weight="bold">6</text>
+  <text x="345" y="315" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" font-weight="600">SCAFFOLD</text>
+  <text x="345" y="330" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="system-ui, sans-serif" font-size="9">Structure</text>
+
+  <!-- Arrow 6-7 -->
+  <polygon points="295,305 285,300 285,310" fill="#ff9ff3" transform="rotate(180 290 305)"/>
+  <path d="M260 305 L295 305" stroke="#54a0ff" stroke-width="3" fill="none"/>
+
+  <!-- Phase 7 -->
+  <rect x="165" y="260" width="90" height="90" rx="10" fill="url(#phase7)" filter="url(#glow)"/>
+  <text x="210" y="290" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="28" font-weight="bold">7</text>
+  <text x="210" y="315" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" font-weight="600">BUILD</text>
+  <text x="210" y="330" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="system-ui, sans-serif" font-size="9">Enforce KB</text>
+
+  <!-- Arrow 7-8 -->
+  <polygon points="160,305 150,300 150,310" fill="#00d2d3" transform="rotate(180 155 305)"/>
+  <path d="M125 305 L160 305" stroke="#ff9ff3" stroke-width="3" fill="none"/>
+
+  <!-- Phase 8 -->
+  <rect x="30" y="260" width="90" height="90" rx="10" fill="url(#phase8)" filter="url(#glow)"/>
+  <text x="75" y="290" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="28" font-weight="bold">8</text>
+  <text x="75" y="315" text-anchor="middle" fill="#fff" font-family="system-ui, sans-serif" font-size="11" font-weight="600">VERIFY</text>
+  <text x="75" y="330" text-anchor="middle" fill="rgba(255,255,255,0.8)" font-family="system-ui, sans-serif" font-size="9">Final Check</text>
+
+  <!-- Phase 2 Details Box -->
+  <rect x="590" y="60" width="280" height="200" rx="8" fill="rgba(254,202,87,0.1)" stroke="#feca57" stroke-width="2"/>
+  <text x="730" y="85" text-anchor="middle" fill="#feca57" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">Phase 2: KB Creation</text>
+  <text x="610" y="110" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11">2.1 Domain Scoping</text>
+  <text x="610" y="128" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11">2.2 Perspective Expansion</text>
+  <text x="610" y="146" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11">2.3 Expert Discovery (100 experts)</text>
+  <text x="610" y="164" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11">2.4 Completeness Audit</text>
+  <text x="610" y="182" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11">2.5 Gap Filling</text>
+  <text x="610" y="200" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11">2.6 Structure (max 9 nodes)</text>
+  <text x="610" y="218" fill="#ffffff" font-family="system-ui, sans-serif" font-size="11">2.7 Recursive Depth</text>
+  <text x="610" y="236" fill="#1dd1a1" font-family="system-ui, sans-serif" font-size="11" font-weight="bold">2.8 Quality Loop (score >= 98)</text>
+
+  <!-- Enforcement Rules Box -->
+  <rect x="590" y="280" width="280" height="90" rx="8" fill="rgba(0,210,211,0.1)" stroke="#00d2d3" stroke-width="2"/>
+  <text x="730" y="305" text-anchor="middle" fill="#00d2d3" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">Enforcement Rules</text>
+  <text x="610" y="330" fill="#ff6b6b" font-family="system-ui, sans-serif" font-size="11">NO SHORTCUTS</text>
+  <text x="610" y="348" fill="#ff6b6b" font-family="system-ui, sans-serif" font-size="11">NO HARDCODED VALUES</text>
+  <text x="610" y="366" fill="#1dd1a1" font-family="system-ui, sans-serif" font-size="11">ALL SOURCES TRACED</text>
+
+  <!-- Connection line to details -->
+  <path d="M260 125 Q275 150 275 180 L580 180" stroke="rgba(254,202,87,0.4)" stroke-width="1" fill="none" stroke-dasharray="4,4"/>
+
+  <!-- Footer -->
+  <text x="450" y="455" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-family="system-ui, sans-serif" font-size="11">Each phase has quality gates. No skipping allowed.</text>
+</svg>
