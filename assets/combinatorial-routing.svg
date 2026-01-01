@@ -182,10 +182,10 @@
   <!-- Legend -->
   <g transform="translate(620, 520)">
     <circle cx="10" cy="8" r="5" fill="url(#greenGradient)"/>
-    <text x="22" y="12" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="9">High (>0.7)</text>
+    <text x="22" y="12" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="9">High (&gt;0.7)</text>
     <circle cx="10" cy="26" r="5" fill="url(#orangeGradient)"/>
     <text x="22" y="30" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="9">Med (0.5-0.7)</text>
     <circle cx="10" cy="44" r="5" fill="#64748b"/>
-    <text x="22" y="48" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="9">Low (<0.5)</text>
+    <text x="22" y="48" fill="#94a3b8" font-family="system-ui, -apple-system, sans-serif" font-size="9">Low (&lt;0.5)</text>
   </g>
 </svg>
