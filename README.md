@@ -81,7 +81,7 @@ KB-First leverages the full **RuVector** stack for intelligent applications:
 KB-First applications are built through a rigorous 8-phase process:
 
 <p align="center">
-  <img src="assets/build-process.svg" alt="The 8-Phase Build Process" width="800">
+  <img src="https://raw.githubusercontent.com/stuinfla/Ruvnet-KB-App_Creator/main/assets/build-process.svg?v=2" alt="The 8-Phase Build Process" width="800">
 </p>
 
 <details>
@@ -197,7 +197,7 @@ Every KB-First application fits one of four patterns. The pattern determines you
 *Examples: Travel optimizer, customer support, resource allocation*
 
 <p align="center">
-  <img src="assets/combinatorial-routing.svg" alt="MoE Expert Routing Pattern" width="800">
+  <img src="https://raw.githubusercontent.com/stuinfla/Ruvnet-KB-App_Creator/main/assets/combinatorial-routing.svg?v=2" alt="MoE Expert Routing Pattern" width="800">
 </p>
 
 <details>
