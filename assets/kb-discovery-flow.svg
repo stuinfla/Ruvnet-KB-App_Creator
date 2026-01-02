@@ -1,8 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="900" height="600">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 700" width="900" height="700">
   <defs>
     <linearGradient id="tier1Grad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
       <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="wasmGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7c3aed;stop-opacity:1" />
     </linearGradient>
     <linearGradient id="tier2Grad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
@@ -18,11 +22,11 @@
   </defs>
 
   <!-- Background -->
-  <rect width="900" height="600" fill="#0f172a"/>
+  <rect width="900" height="700" fill="#0f172a"/>
 
   <!-- Title -->
-  <text x="450" y="40" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="24" font-weight="bold">KB DISCOVERY FLOW</text>
-  <text x="450" y="65" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="14">Three-Tier Graceful Degradation</text>
+  <text x="450" y="40" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="24" font-weight="bold">KB DISCOVERY FLOW v6.5</text>
+  <text x="450" y="65" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="14">Four-Tier Graceful Degradation with WASM KB</text>
 
   <!-- Start Node -->
   <rect x="350" y="90" width="200" height="50" rx="25" fill="#6366f1" filter="url(#shadow)"/>
@@ -32,73 +36,98 @@
   <path d="M450 140 L450 170" stroke="#6366f1" stroke-width="3" fill="none"/>
   <polygon points="450,180 445,170 455,170" fill="#6366f1"/>
 
-  <!-- Check Local KB -->
+  <!-- Check PostgreSQL KB -->
   <rect x="300" y="185" width="300" height="60" rx="8" fill="#1e293b" stroke="#6366f1" stroke-width="2"/>
   <text x="450" y="210" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="12">Check: ruvector-postgres</text>
   <text x="450" y="230" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">running on port 5435?</text>
 
   <!-- YES branch to Tier 1 -->
-  <path d="M600 215 L680 215 L680 300" stroke="#10b981" stroke-width="2" fill="none"/>
+  <path d="M600 215 L730 215 L730 290" stroke="#10b981" stroke-width="2" fill="none"/>
   <text x="620" y="205" fill="#10b981" font-family="system-ui, sans-serif" font-size="12" font-weight="bold">YES</text>
-  <polygon points="680,310 675,300 685,300" fill="#10b981"/>
+  <polygon points="730,300 725,290 735,290" fill="#10b981"/>
 
   <!-- Tier 1 Box -->
-  <rect x="600" y="315" width="250" height="130" rx="12" fill="url(#tier1Grad)" filter="url(#shadow)"/>
-  <text x="725" y="345" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="16" font-weight="bold">TIER 1: FULL KB</text>
-  <text x="725" y="370" text-anchor="middle" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="12">230K+ entries</text>
-  <line x1="620" y1="385" x2="830" y2="385" stroke="#d1fae5" stroke-opacity="0.3"/>
-  <text x="630" y="405" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="11">* Semantic search</text>
-  <text x="630" y="422" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="11">* KB citations</text>
-  <text x="630" y="439" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="11">* Gap detection</text>
+  <rect x="630" y="305" width="220" height="110" rx="12" fill="url(#tier1Grad)" filter="url(#shadow)"/>
+  <text x="740" y="332" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">TIER 1: FULL KB</text>
+  <text x="740" y="352" text-anchor="middle" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="11">230K+ entries</text>
+  <line x1="645" y1="365" x2="835" y2="365" stroke="#d1fae5" stroke-opacity="0.3"/>
+  <text x="655" y="382" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="10">* Full semantic search</text>
+  <text x="655" y="397" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="10">* KB citations</text>
+  <text x="655" y="412" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="10">* Gap detection</text>
 
-  <!-- NO branch -->
-  <path d="M450 245 L450 280" stroke="#f59e0b" stroke-width="2" fill="none"/>
-  <text x="430" y="268" fill="#f59e0b" font-family="system-ui, sans-serif" font-size="12" font-weight="bold">NO</text>
-  <polygon points="450,290 445,280 455,280" fill="#f59e0b"/>
+  <!-- NO branch to WASM check -->
+  <path d="M450 245 L450 280" stroke="#8b5cf6" stroke-width="2" fill="none"/>
+  <text x="430" y="268" fill="#8b5cf6" font-family="system-ui, sans-serif" font-size="12" font-weight="bold">NO</text>
+  <polygon points="450,290 445,280 455,280" fill="#8b5cf6"/>
+
+  <!-- Check WASM KB -->
+  <rect x="300" y="295" width="300" height="60" rx="8" fill="#1e293b" stroke="#8b5cf6" stroke-width="2"/>
+  <text x="450" y="320" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="12">Check: WASM KB embedded</text>
+  <text x="450" y="340" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">in npm package?</text>
+
+  <!-- YES branch to WASM -->
+  <path d="M300 325 L170 325 L170 420" stroke="#8b5cf6" stroke-width="2" fill="none"/>
+  <text x="220" y="315" fill="#8b5cf6" font-family="system-ui, sans-serif" font-size="12" font-weight="bold">YES (Default)</text>
+  <polygon points="170,430 165,420 175,420" fill="#8b5cf6"/>
+
+  <!-- WASM KB Box (NEW) -->
+  <rect x="50" y="435" width="220" height="110" rx="12" fill="url(#wasmGrad)" filter="url(#shadow)"/>
+  <text x="160" y="462" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">WASM KB (NEW)</text>
+  <text x="160" y="482" text-anchor="middle" fill="#ede9fe" font-family="system-ui, sans-serif" font-size="11">17,524 entries embedded</text>
+  <line x1="65" y1="495" x2="255" y2="495" stroke="#ede9fe" stroke-opacity="0.3"/>
+  <text x="75" y="512" fill="#ede9fe" font-family="system-ui, sans-serif" font-size="10">* 15-30ms search</text>
+  <text x="75" y="527" fill="#ede9fe" font-family="system-ui, sans-serif" font-size="10">* Works offline</text>
+  <text x="75" y="542" fill="#ede9fe" font-family="system-ui, sans-serif" font-size="10">* Auto-update detection</text>
+
+  <!-- NO branch to Starter check -->
+  <path d="M450 355 L450 400" stroke="#f59e0b" stroke-width="2" fill="none"/>
+  <text x="430" y="383" fill="#f59e0b" font-family="system-ui, sans-serif" font-size="12" font-weight="bold">NO</text>
+  <polygon points="450,410 445,400 455,400" fill="#f59e0b"/>
 
   <!-- Check Starter KB -->
-  <rect x="300" y="295" width="300" height="60" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
-  <text x="450" y="320" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="12">Check: Bundled starter KB</text>
-  <text x="450" y="340" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">exists in .ruvector/?</text>
+  <rect x="300" y="415" width="300" height="60" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="440" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="12">Check: Bundled starter KB</text>
+  <text x="450" y="460" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">exists in .ruvector/?</text>
 
   <!-- YES branch to Tier 2 -->
-  <path d="M300 325 L220 325 L220 415" stroke="#f59e0b" stroke-width="2" fill="none"/>
-  <text x="245" y="315" fill="#f59e0b" font-family="system-ui, sans-serif" font-size="12" font-weight="bold">YES</text>
-  <polygon points="220,425 215,415 225,415" fill="#f59e0b"/>
+  <path d="M600 445 L700 445 L700 530" stroke="#f59e0b" stroke-width="2" fill="none"/>
+  <text x="620" y="435" fill="#f59e0b" font-family="system-ui, sans-serif" font-size="12" font-weight="bold">YES</text>
+  <polygon points="700,540 695,530 705,530" fill="#f59e0b"/>
 
   <!-- Tier 2 Box -->
-  <rect x="50" y="430" width="250" height="130" rx="12" fill="url(#tier2Grad)" filter="url(#shadow)"/>
-  <text x="175" y="460" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="16" font-weight="bold">TIER 2: STARTER</text>
-  <text x="175" y="485" text-anchor="middle" fill="#fef3c7" font-family="system-ui, sans-serif" font-size="12">500 core patterns</text>
-  <line x1="70" y1="500" x2="280" y2="500" stroke="#fef3c7" stroke-opacity="0.3"/>
-  <text x="80" y="520" fill="#fef3c7" font-family="system-ui, sans-serif" font-size="11">* Basic semantic search</text>
-  <text x="80" y="537" fill="#fef3c7" font-family="system-ui, sans-serif" font-size="11">* Core patterns only</text>
-  <text x="80" y="554" fill="#fef3c7" font-family="system-ui, sans-serif" font-size="11">* Zero config</text>
+  <rect x="620" y="545" width="220" height="100" rx="12" fill="url(#tier2Grad)" filter="url(#shadow)"/>
+  <text x="730" y="572" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">TIER 2: STARTER</text>
+  <text x="730" y="592" text-anchor="middle" fill="#fef3c7" font-family="system-ui, sans-serif" font-size="11">500 core patterns</text>
+  <line x1="635" y1="605" x2="825" y2="605" stroke="#fef3c7" stroke-opacity="0.3"/>
+  <text x="645" y="622" fill="#fef3c7" font-family="system-ui, sans-serif" font-size="10">* Basic semantic search</text>
+  <text x="645" y="637" fill="#fef3c7" font-family="system-ui, sans-serif" font-size="10">* Zero config</text>
 
   <!-- NO branch to Tier 3 -->
-  <path d="M450 355 L450 425" stroke="#6b7280" stroke-width="2" fill="none"/>
-  <text x="430" y="395" fill="#6b7280" font-family="system-ui, sans-serif" font-size="12" font-weight="bold">NO</text>
-  <polygon points="450,435 445,425 455,425" fill="#6b7280"/>
+  <path d="M450 475 L450 540" stroke="#6b7280" stroke-width="2" fill="none"/>
+  <text x="430" y="513" fill="#6b7280" font-family="system-ui, sans-serif" font-size="12" font-weight="bold">NO</text>
+  <polygon points="450,550 445,540 455,540" fill="#6b7280"/>
 
   <!-- Tier 3 Box -->
-  <rect x="325" y="440" width="250" height="130" rx="12" fill="url(#tier3Grad)" filter="url(#shadow)"/>
-  <text x="450" y="470" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="16" font-weight="bold">TIER 3: STRUCTURAL</text>
-  <text x="450" y="495" text-anchor="middle" fill="#e5e7eb" font-family="system-ui, sans-serif" font-size="12">No KB required</text>
-  <line x1="345" y1="510" x2="555" y2="510" stroke="#e5e7eb" stroke-opacity="0.3"/>
-  <text x="355" y="530" fill="#e5e7eb" font-family="system-ui, sans-serif" font-size="11">* Directory scoring</text>
-  <text x="355" y="547" fill="#e5e7eb" font-family="system-ui, sans-serif" font-size="11">* Phase tracking</text>
-  <text x="355" y="564" fill="#e5e7eb" font-family="system-ui, sans-serif" font-size="11">* Offers setup options</text>
+  <rect x="325" y="555" width="220" height="100" rx="12" fill="url(#tier3Grad)" filter="url(#shadow)"/>
+  <text x="435" y="582" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">TIER 3: STRUCTURAL</text>
+  <text x="435" y="602" text-anchor="middle" fill="#e5e7eb" font-family="system-ui, sans-serif" font-size="11">No KB required</text>
+  <line x1="340" y1="615" x2="530" y2="615" stroke="#e5e7eb" stroke-opacity="0.3"/>
+  <text x="350" y="632" fill="#e5e7eb" font-family="system-ui, sans-serif" font-size="10">* Directory scoring</text>
+  <text x="350" y="647" fill="#e5e7eb" font-family="system-ui, sans-serif" font-size="10">* Phase tracking only</text>
 
   <!-- Legend -->
-  <rect x="620" y="480" width="230" height="80" rx="8" fill="#1e293b" stroke="#475569" stroke-width="1"/>
-  <text x="735" y="502" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11" font-weight="bold">FALLBACK CHAIN</text>
-  <circle cx="645" cy="522" r="6" fill="#10b981"/>
-  <text x="660" y="526" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="10">Tier 1</text>
-  <text x="700" y="526" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">--&gt;</text>
-  <circle cx="725" cy="522" r="6" fill="#f59e0b"/>
-  <text x="740" y="526" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="10">Tier 2</text>
-  <text x="780" y="526" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">--&gt;</text>
-  <circle cx="805" cy="522" r="6" fill="#6b7280"/>
-  <text x="820" y="526" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="10">Tier 3</text>
-  <text x="735" y="548" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">Graceful degradation</text>
+  <rect x="50" y="570" width="260" height="85" rx="8" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+  <text x="180" y="592" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11" font-weight="bold">FALLBACK CHAIN</text>
+  <circle cx="75" cy="612" r="6" fill="#10b981"/>
+  <text x="90" y="616" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="9">Full</text>
+  <text x="115" y="616" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="9">-&gt;</text>
+  <circle cx="135" cy="612" r="6" fill="#8b5cf6"/>
+  <text x="150" y="616" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="9">WASM</text>
+  <text x="180" y="616" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="9">-&gt;</text>
+  <circle cx="200" cy="612" r="6" fill="#f59e0b"/>
+  <text x="215" y="616" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="9">Starter</text>
+  <text x="253" y="616" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="9">-&gt;</text>
+  <circle cx="273" cy="612" r="6" fill="#6b7280"/>
+  <text x="288" y="616" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="9">None</text>
+  <text x="180" y="640" text-anchor="middle" fill="#8b5cf6" font-family="system-ui, sans-serif" font-size="10" font-weight="bold">WASM = Default when PostgreSQL unavailable</text>
 </svg>
