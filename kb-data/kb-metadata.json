@@ -1,58 +1,58 @@
 {
   "version": "1.0.0",
   "schema": "ask_ruvnet",
-  "exportedAt": "2026-01-02T18:29:18.233Z",
-  "totalEntries": 16575,
+  "exportedAt": "2026-01-02T18:51:15.858Z",
+  "totalEntries": 17524,
   "embeddingDim": 384,
   "quantization": "binary",
   "categories": [
     {
       "name": "general",
-      "count": 8502
+      "count": 9042
     },
     {
       "name": "agents",
-      "count": 4443
+      "count": 4628
     },
     {
       "name": "vector-db",
-      "count": 882
+      "count": 885
     },
     {
       "name": "swarms",
-      "count": 735
+      "count": 762
     },
     {
       "name": "neural",
-      "count": 414
+      "count": 416
     },
     {
       "name": "mcp",
-      "count": 259
-    },
-    {
-      "name": "deployment",
-      "count": 257
-    },
-    {
-      "name": "sparc",
-      "count": 236
-    },
-    {
-      "name": "github",
-      "count": 214
+      "count": 296
     },
     {
       "name": "memory",
-      "count": 206
+      "count": 273
+    },
+    {
+      "name": "deployment",
+      "count": 270
+    },
+    {
+      "name": "github",
+      "count": 256
+    },
+    {
+      "name": "sparc",
+      "count": 237
     },
     {
       "name": "performance",
-      "count": 184
+      "count": 201
     },
     {
       "name": "security",
-      "count": 127
+      "count": 139
     },
     {
       "name": "reinforcement-learning",
@@ -60,12 +60,12 @@
     },
     {
       "name": "llm",
-      "count": 22
+      "count": 24
     },
     {
       "name": "consensus",
-      "count": 13
+      "count": 14
     }
   ],
-  "contentHash": "67818fd61d6327c3"
+  "contentHash": "62117666416c8c6e"
 }

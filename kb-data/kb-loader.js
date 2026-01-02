@@ -4,9 +4,9 @@
  * Loads the embedded knowledge base into RvLite WASM.
  * Provides semantic search with ~5ms latency.
  *
- * Content Hash: 67818fd61d6327c3
- * Generated: 2026-01-02T18:29:18.233Z
- * Entries: 16,575
+ * Content Hash: 62117666416c8c6e
+ * Generated: 2026-01-02T18:51:15.858Z
+ * Entries: 17,524
  */
 
 import fs from 'fs';
@@ -44,9 +44,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // KB Version Info
 export const KB_VERSION = {
-  hash: '67818fd61d6327c3',
-  exportedAt: '2026-01-02T18:29:18.233Z',
-  totalEntries: 16575,
+  hash: '62117666416c8c6e',
+  exportedAt: '2026-01-02T18:51:15.858Z',
+  totalEntries: 17524,
   embeddingDim: 384,
   quantization: 'binary',
 };
