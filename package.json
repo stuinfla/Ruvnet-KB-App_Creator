@@ -1,6 +1,6 @@
 {
   "name": "ruvnet-kb-first",
-  "version": "6.5.2",
+  "version": "6.5.3",
   "description": "RuvNet KB-First Application Builder - Build intelligent applications on expert knowledge",
   "type": "module",
   "main": "src/index.js",
