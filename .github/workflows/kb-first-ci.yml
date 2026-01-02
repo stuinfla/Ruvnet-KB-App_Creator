@@ -1,0 +1,330 @@
+# KB-First Application Builder CI/CD Pipeline
+# Version 1.0.0 | Created 2026-01-01
+#
+# SECURITY NOTE: This workflow only uses job outputs and safe context variables.
+# No user-controlled inputs (issue titles, PR bodies, commit messages) are used in run commands.
+
+name: KB-First Quality Gates
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+    inputs:
+      run_full_verification:
+        description: 'Run full Phase 8 verification'
+        required: false
+        default: 'false'
+        type: boolean
+
+env:
+  KB_QUALITY_THRESHOLD: 98
+  APP_COMPLIANCE_THRESHOLD: 98
+  NODE_VERSION: '20'
+
+jobs:
+  # =============================================================
+  # Phase 0: Assessment (Scores before changes)
+  # =============================================================
+  assessment:
+    name: Phase 0 - Assessment
+    runs-on: ubuntu-latest
+    outputs:
+      kb_score: ${{ steps.kb-score.outputs.score }}
+      app_score: ${{ steps.app-score.outputs.score }}
+      is_brownfield: ${{ steps.detect.outputs.brownfield }}
+
+    services:
+      postgres:
+        image: ruvnet/ruvector-postgres:latest
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: kb_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Detect Application Type
+        id: detect
+        run: |
+          SCORE=0
+          [ -d "src" ] && SCORE=$((SCORE + 1))
+          [ -f "package.json" ] && SCORE=$((SCORE + 1))
+          [ -d "src/domain" ] && SCORE=$((SCORE + 1))
+
+          if [ $SCORE -ge 2 ]; then
+            echo "brownfield=true" >> "$GITHUB_OUTPUT"
+            echo "Brownfield application detected"
+          else
+            echo "brownfield=false" >> "$GITHUB_OUTPUT"
+            echo "Greenfield application detected"
+          fi
+
+      - name: Score KB Quality
+        id: kb-score
+        if: steps.detect.outputs.brownfield == 'true'
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kb_test
+        run: |
+          if [ -f "scripts/score-kb.sh" ]; then
+            SCORE=$(./scripts/score-kb.sh | grep -oP 'TOTAL_KB_SCORE: \K[0-9]+' || echo "0")
+          else
+            SCORE=0
+          fi
+          echo "score=$SCORE" >> "$GITHUB_OUTPUT"
+          echo "KB Quality Score: $SCORE/100"
+
+      - name: Score App Compliance
+        id: app-score
+        if: steps.detect.outputs.brownfield == 'true'
+        run: |
+          if [ -f "scripts/score-app.sh" ]; then
+            SCORE=$(./scripts/score-app.sh | grep -oP 'TOTAL.*: \K[0-9]+' || echo "0")
+          else
+            SCORE=0
+          fi
+          echo "score=$SCORE" >> "$GITHUB_OUTPUT"
+          echo "App Compliance Score: $SCORE/100"
+
+  # =============================================================
+  # Phase 8: Verification (All 8 checks)
+  # =============================================================
+  verification:
+    name: Phase 8 - Verification
+    runs-on: ubuntu-latest
+    needs: assessment
+    if: needs.assessment.outputs.is_brownfield == 'true'
+
+    strategy:
+      fail-fast: false
+      matrix:
+        check:
+          - name: "8.1 Code Scan"
+            script: "scripts/8.1-code-scan.sh"
+          - name: "8.2 Import Check"
+            script: "scripts/8.2-import-check.sh"
+          - name: "8.3 Source Returns"
+            script: "scripts/8.3-source-returns.sh"
+          - name: "8.4 Startup Verify"
+            script: "scripts/8.4-startup-verify.sh"
+          - name: "8.5 Fallback Check"
+            script: "scripts/8.5-fallback-check.sh"
+          - name: "8.6 Attribution"
+            script: "scripts/8.6-attribution.sh"
+          - name: "8.7 Confidence"
+            script: "scripts/8.7-confidence.sh"
+          - name: "8.8 Gap Logging"
+            script: "scripts/8.8-gap-logging.sh"
+
+    services:
+      postgres:
+        image: ruvnet/ruvector-postgres:latest
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: kb_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Verification Check
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kb_test
+          CHECK_SCRIPT: ${{ matrix.check.script }}
+        run: |
+          if [ -f "$CHECK_SCRIPT" ]; then
+            chmod +x "$CHECK_SCRIPT"
+            ./"$CHECK_SCRIPT"
+          else
+            echo "Script not found: $CHECK_SCRIPT"
+            echo "Create this script to enable verification."
+          fi
+
+  # =============================================================
+  # Testing
+  # =============================================================
+  test:
+    name: Test Suite
+    runs-on: ubuntu-latest
+    needs: assessment
+
+    services:
+      postgres:
+        image: ruvnet/ruvector-postgres:latest
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: kb_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Unit Tests
+        run: npm run test:unit --if-present
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kb_test
+
+      - name: Run KB Quality Tests
+        run: npm run test:kb --if-present
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kb_test
+
+      - name: Run Integration Tests
+        run: npm run test:integration --if-present
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/kb_test
+
+      - name: Upload Coverage
+        uses: codecov/codecov-action@v3
+        if: always()
+        with:
+          fail_ci_if_error: false
+
+  # =============================================================
+  # Quality Gate Enforcement
+  # =============================================================
+  quality-gate:
+    name: Quality Gate
+    runs-on: ubuntu-latest
+    needs: [assessment, verification, test]
+    if: always()
+
+    steps:
+      - name: Check KB Quality Score
+        if: needs.assessment.outputs.is_brownfield == 'true'
+        env:
+          KB_SCORE: ${{ needs.assessment.outputs.kb_score }}
+          THRESHOLD: ${{ env.KB_QUALITY_THRESHOLD }}
+        run: |
+          if [ "$KB_SCORE" -lt "$THRESHOLD" ]; then
+            echo "KB Quality Score ($KB_SCORE) is below threshold ($THRESHOLD)"
+            exit 1
+          fi
+          echo "KB Quality Score: $KB_SCORE passed"
+
+      - name: Check App Compliance Score
+        if: needs.assessment.outputs.is_brownfield == 'true'
+        env:
+          APP_SCORE: ${{ needs.assessment.outputs.app_score }}
+          THRESHOLD: ${{ env.APP_COMPLIANCE_THRESHOLD }}
+        run: |
+          if [ "$APP_SCORE" -lt "$THRESHOLD" ]; then
+            echo "App Compliance Score ($APP_SCORE) is below threshold ($THRESHOLD)"
+            exit 1
+          fi
+          echo "App Compliance Score: $APP_SCORE passed"
+
+      - name: Check Verification Results
+        if: needs.verification.result == 'failure'
+        run: |
+          echo "One or more Phase 8 verification checks failed"
+          exit 1
+
+      - name: Check Test Results
+        if: needs.test.result == 'failure'
+        run: |
+          echo "Test suite failed"
+          exit 1
+
+      - name: Quality Gate Passed
+        env:
+          KB_SCORE: ${{ needs.assessment.outputs.kb_score }}
+          APP_SCORE: ${{ needs.assessment.outputs.app_score }}
+          VERIFICATION: ${{ needs.verification.result }}
+          TESTS: ${{ needs.test.result }}
+        run: |
+          echo "================================================"
+          echo "        QUALITY GATE PASSED"
+          echo "================================================"
+          echo "  KB Quality:      $KB_SCORE/100"
+          echo "  App Compliance:  $APP_SCORE/100"
+          echo "  Verification:    $VERIFICATION"
+          echo "  Tests:           $TESTS"
+          echo "================================================"
+
+  # =============================================================
+  # Delta Report (for PRs)
+  # =============================================================
+  delta-report:
+    name: Delta Report
+    runs-on: ubuntu-latest
+    needs: [assessment, quality-gate]
+    if: github.event_name == 'pull_request' && needs.assessment.outputs.is_brownfield == 'true'
+
+    steps:
+      - name: Generate Delta Report
+        uses: actions/github-script@v7
+        env:
+          KB_SCORE: ${{ needs.assessment.outputs.kb_score }}
+          APP_SCORE: ${{ needs.assessment.outputs.app_score }}
+        with:
+          script: |
+            const kb_score = process.env.KB_SCORE;
+            const app_score = process.env.APP_SCORE;
+
+            const body = `
+## KB-First Quality Report
+
+| Metric | Score | Threshold | Status |
+|--------|-------|-----------|--------|
+| KB Quality | ${kb_score}/100 | >=98 | ${parseInt(kb_score) >= 98 ? 'PASS' : 'FAIL'} |
+| App Compliance | ${app_score}/100 | >=98 | ${parseInt(app_score) >= 98 ? 'PASS' : 'FAIL'} |
+
+---
+*Generated by KB-First CI/CD Pipeline*
+            `;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: body
+            });

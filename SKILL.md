@@ -1,9 +1,36 @@
-# KB-First Application Builder v3.0
+Updated: 2026-01-01 20:45:00 EST | Version 4.1.0
+Created: 2026-01-01 15:00:00 EST
+
+# KB-First Application Builder v4.1
 
 ## Intelligence-First Architecture for Knowledge Applications
 
-**Version:** 3.0.0  
+**Version:** 4.1.0
 **Purpose:** Build applications where curated expert knowledge drives intelligent decision-making through GNN reasoning, attention routing, and SONA learning.
+
+---
+
+## What's New in v4.1
+
+| Feature | Description |
+|---------|-------------|
+| **Greenfield Support** | Full workflow for new projects via PROJECT_INTENTIONS.md |
+| **Interactive Discovery** | Structured questions when no intentions file exists |
+| **IS/SHOULD/COULD Analysis** | Present vision to user before execution |
+| **User Feedback Loop** | Mandatory feedback before proceeding |
+| **CI/CD Pipeline** | GitHub Actions workflow for quality gates |
+| **Verification Scripts** | 8 executable scripts (8.1-8.8) for Phase 8 |
+
+## What's in v4.0
+
+| Feature | Description |
+|---------|-------------|
+| **Phase 0: Assessment** | Mandatory scoring before any changes |
+| **Hard Gates** | DO NOT PROCEED enforcement at every phase boundary |
+| **Scoring Formulas** | Explicit 0-100 scoring for KB quality and app compliance |
+| **Swarm Integration** | Parallel execution configuration for all phases |
+| **Delta Tracking** | Before/after comparison with transformation report |
+| **Phase 8 Sub-Phases** | 8 numbered verification checks (8.1-8.8) |
 
 ---
 
@@ -11,16 +38,33 @@
 
 When you invoke this skill, Claude will:
 
-1. **Analyze** what you're building (or reviewing your existing code)
-2. **Identify** which intelligence pattern fits (Decision Web, Combinatorial Routing, Scenario Learning, or Continuous Optimization)
-3. **Execute** the 8-phase build process with quality gates
-4. **Enforce** KB-First rules throughout development
-5. **Verify** no shortcuts were taken
+1. **Detect** application type (greenfield vs brownfield)
+2. **Score** existing KB and app compliance (brownfield only)
+3. **Confirm** transformation scope with user (brownfield only)
+4. **Identify** which intelligence pattern fits
+5. **Execute** the 9-phase build process with HARD quality gates
+6. **Enforce** KB-First rules throughout development
+7. **Verify** all 8 verification sub-phases pass
+8. **Report** delta (before/after scores)
 
 **Trigger phrases:**
-- "Apply KB-First 3.0 to build [description]"
-- "Review my application with KB-First 3.0"
-- "What intelligence pattern do I need for [description]?"
+- "Build [description] with KB-First" (greenfield)
+- "Apply KB-First to my existing app" (brownfield)
+- "Score my existing KB"
+- "What's my app compliance score?"
+- "/kb-first" (invoke skill directly)
+
+---
+
+## ⛔ Critical Rules (NEVER VIOLATE)
+
+```
+⛔ NEVER skip Phase 0 for brownfield applications
+⛔ NEVER assume the KB is "good enough" without scoring
+⛔ NEVER proceed past a gate without verification
+⛔ NEVER mark a phase complete without running checks
+⛔ NEVER skip scoring before AND after transformation
+```
 
 ---
 
@@ -146,9 +190,48 @@ Q4: Is this a continuous monitoring/optimization loop?
 
 ---
 
-## Part 2: The 8-Phase Build Process
+## Part 2: The 9-Phase Build Process
 
-Every KB-First application is built through these phases with quality gates.
+Every KB-First application is built through these phases with HARD quality gates.
+
+### Phase Overview
+
+| Phase | Name | Sub-Phases | Gate Type |
+|-------|------|------------|-----------|
+| 0 | Assessment | 6 | ⛔ User Confirmation |
+| 1 | Storage | - | Script Check |
+| 2 | KB Creation | 8 | Score ≥98 |
+| 3 | Persistence | - | SQL Check |
+| 4 | Visualization | - | Manual/Playwright |
+| 5 | Integration | - | Compile Check |
+| 6 | Scaffold | - | File Check |
+| 7 | Build | 7 | Script Check |
+| 8 | Verification | 8 | All Must Pass |
+
+**Total Sub-Phases:** 29
+
+---
+
+### Phase 0: Assessment (Brownfield Only)
+
+**Purpose:** Score existing KB and app BEFORE making any changes.
+
+**⛔ MANDATORY for existing applications. DO NOT SKIP.**
+
+| Sub-Phase | Name | Output |
+|-----------|------|--------|
+| 0.1 | Detect Application Type | greenfield/brownfield |
+| 0.2 | Score Existing KB | 0-100 score |
+| 0.3 | Score App Compliance | 0-100 score |
+| 0.4 | Generate Gap Report | Detailed gaps list |
+| 0.5 | Calculate Scope | Effort estimate |
+| 0.6 | Get Confirmation | User types "PROCEED" |
+
+**Quality Gate:** ⛔ User must type "PROCEED" to continue.
+
+**Detailed instructions:** `./phases/00-assessment.md`
+
+---
 
 ### Phase 1: Storage Setup
 

@@ -1,297 +1,597 @@
 # Phase 8: Final Verification
 
+Updated: 2026-01-01 19:45:00 EST | Version 2.0.0
+Created: 2026-01-01 15:00:00 EST
+
 ## Purpose
 
 Comprehensive check that all KB-First rules are followed. This is the final gate before the application is considered complete.
 
 ---
 
-## Verification Checklist
+## ⛔ CRITICAL: This Phase Has 8 Sub-Phases
 
-### A. KB Enforcement Rules
+Each sub-phase is a hard gate. ALL must pass before completion.
 
-#### Rule 1: No Hardcoded Domain Logic
+| Sub-Phase | Name | Automated? | Hard Gate? |
+|-----------|------|------------|------------|
+| 8.1 | Code Scan (No Hardcoded Values) | ✅ Yes | ⛔ Yes |
+| 8.2 | Import Verification | ✅ Yes | ⛔ Yes |
+| 8.3 | Source Return Check | ✅ Yes | ⛔ Yes |
+| 8.4 | Startup Verification Check | ✅ Yes | ⛔ Yes |
+| 8.5 | Fallback Pattern Check | ✅ Yes | ⛔ Yes |
+| 8.6 | Expert Attribution Check | ✅ Yes | ⛔ Yes |
+| 8.7 | Confidence Score Check | ✅ Yes | ⛔ Yes |
+| 8.8 | Gap Logging Verification | ✅ Yes | ⛔ Yes |
 
+---
+
+## 8.1 Code Scan (No Hardcoded Values)
+
+**Purpose:** Verify no domain logic is hardcoded.
+
+**Script:**
 ```bash
-# Check for suspicious patterns in domain files
-grep -rn "= [0-9]\+\.[0-9]\+" src/domain/     # Decimal numbers
-grep -rn "= [0-9]\+" src/domain/              # Integer constants
-grep -rn "const.*Rate" src/domain/            # Rate constants
-grep -rn "const.*Age" src/domain/             # Age constants
-grep -rn "const.*Limit" src/domain/           # Limit constants
-grep -rn "DEFAULT_" src/domain/               # Default values
+#!/bin/bash
+# 8.1-code-scan.sh
+
+echo "=== 8.1 Code Scan ==="
+ERRORS=0
+
+# Check for hardcoded decimals
+DECIMALS=$(grep -rn "= [0-9]\+\.[0-9]\+" src/domain/ 2>/dev/null | grep -v "confidence" | wc -l)
+if [ $DECIMALS -gt 0 ]; then
+  echo "❌ Found $DECIMALS hardcoded decimal values:"
+  grep -rn "= [0-9]\+\.[0-9]\+" src/domain/ | grep -v "confidence"
+  ERRORS=$((ERRORS + DECIMALS))
+else
+  echo "✅ No hardcoded decimals"
+fi
+
+# Check for rate/age/limit constants
+CONSTANTS=$(grep -rn "const.*\(Rate\|Age\|Limit\|Amount\)" src/domain/ 2>/dev/null | wc -l)
+if [ $CONSTANTS -gt 0 ]; then
+  echo "❌ Found $CONSTANTS suspicious constants:"
+  grep -rn "const.*\(Rate\|Age\|Limit\|Amount\)" src/domain/
+  ERRORS=$((ERRORS + CONSTANTS))
+else
+  echo "✅ No suspicious constants"
+fi
+
+# Check for DEFAULT_ patterns
+DEFAULTS=$(grep -rn "DEFAULT_" src/domain/ 2>/dev/null | wc -l)
+if [ $DEFAULTS -gt 0 ]; then
+  echo "❌ Found $DEFAULTS DEFAULT_ patterns:"
+  grep -rn "DEFAULT_" src/domain/
+  ERRORS=$((ERRORS + DEFAULTS))
+else
+  echo "✅ No DEFAULT_ patterns"
+fi
+
+echo ""
+if [ $ERRORS -eq 0 ]; then
+  echo "✅ 8.1 PASSED"
+  exit 0
+else
+  echo "❌ 8.1 FAILED ($ERRORS errors)"
+  exit 1
+fi
 ```
 
-**Expected:** No matches, or all matches are justified (e.g., array indices)
+**Gate:** Exit code must be 0
 
-#### Rule 2: Every Domain Function Queries KB
+---
 
+## 8.2 Import Verification
+
+**Purpose:** All domain files must import from kb/.
+
+**Script:**
 ```bash
-# Check all domain files import from kb
-for file in src/domain/*.ts; do
-  if ! grep -q "from.*kb" "$file"; then
-    echo "FAIL: $file does not import from kb/"
+#!/bin/bash
+# 8.2-import-check.sh
+
+echo "=== 8.2 Import Verification ==="
+ERRORS=0
+
+for file in src/domain/*.ts src/domain/*.js 2>/dev/null; do
+  if [ -f "$file" ]; then
+    if ! grep -q "from.*['\"].*kb" "$file"; then
+      echo "❌ $file does not import from kb/"
+      ERRORS=$((ERRORS + 1))
+    else
+      echo "✅ $file imports from kb/"
+    fi
   fi
 done
+
+echo ""
+if [ $ERRORS -eq 0 ]; then
+  echo "✅ 8.2 PASSED"
+  exit 0
+else
+  echo "❌ 8.2 FAILED ($ERRORS files missing kb import)"
+  exit 1
+fi
 ```
 
-**Expected:** All files import from kb/
+**Gate:** Exit code must be 0
 
-#### Rule 3: All Responses Include kbSources
+---
 
+## 8.3 Source Return Check
+
+**Purpose:** All domain functions must return kbSources.
+
+**Script:**
 ```bash
-# Check return types include kbSources
-grep -rn "return {" src/domain/ | while read line; do
-  file=$(echo $line | cut -d: -f1)
-  if ! grep -A5 "return {" "$file" | grep -q "kbSources"; then
-    echo "CHECK: $file may not return kbSources"
+#!/bin/bash
+# 8.3-source-check.sh
+
+echo "=== 8.3 Source Return Check ==="
+ERRORS=0
+
+for file in src/domain/*.ts src/domain/*.js 2>/dev/null; do
+  if [ -f "$file" ]; then
+    # Count return statements
+    RETURNS=$(grep -c "return {" "$file" 2>/dev/null || echo 0)
+    # Count kbSources in returns
+    SOURCES=$(grep -A5 "return {" "$file" 2>/dev/null | grep -c "kbSources" || echo 0)
+
+    if [ $RETURNS -gt 0 ] && [ $SOURCES -lt $RETURNS ]; then
+      echo "❌ $file: $SOURCES/$RETURNS returns have kbSources"
+      ERRORS=$((ERRORS + 1))
+    elif [ $RETURNS -gt 0 ]; then
+      echo "✅ $file: All returns have kbSources"
+    fi
   fi
 done
+
+echo ""
+if [ $ERRORS -eq 0 ]; then
+  echo "✅ 8.3 PASSED"
+  exit 0
+else
+  echo "❌ 8.3 FAILED ($ERRORS files missing kbSources)"
+  exit 1
+fi
 ```
 
-**Expected:** All return statements include kbSources
+**Gate:** Exit code must be 0
 
-#### Rule 4: Startup Verification
+---
 
+## 8.4 Startup Verification Check
+
+**Purpose:** Entry point must verify KB before anything else.
+
+**Script:**
 ```bash
-# Check entry point
-head -30 src/index.ts | grep -q "verifyConnection"
-echo "Verify connection check: $?"
+#!/bin/bash
+# 8.4-startup-check.sh
 
-grep -q "process.exit(1)" src/index.ts
-echo "Exit on failure check: $?"
+echo "=== 8.4 Startup Verification Check ==="
+ERRORS=0
+
+ENTRY_FILE=""
+for f in src/index.ts src/index.js src/main.ts src/main.js; do
+  [ -f "$f" ] && ENTRY_FILE="$f" && break
+done
+
+if [ -z "$ENTRY_FILE" ]; then
+  echo "❌ No entry point found (src/index.ts or src/main.ts)"
+  exit 1
+fi
+
+echo "Checking $ENTRY_FILE..."
+
+# Check verifyConnection is called
+if ! grep -q "verifyConnection" "$ENTRY_FILE"; then
+  echo "❌ verifyConnection not found"
+  ERRORS=$((ERRORS + 1))
+else
+  echo "✅ verifyConnection present"
+fi
+
+# Check it's called early (in first 30 lines)
+if ! head -30 "$ENTRY_FILE" | grep -q "verifyConnection"; then
+  echo "⚠️  verifyConnection may not be called first"
+fi
+
+# Check process.exit on failure
+if ! grep -q "process.exit(1)" "$ENTRY_FILE"; then
+  echo "❌ No process.exit(1) on KB failure"
+  ERRORS=$((ERRORS + 1))
+else
+  echo "✅ process.exit(1) present"
+fi
+
+echo ""
+if [ $ERRORS -eq 0 ]; then
+  echo "✅ 8.4 PASSED"
+  exit 0
+else
+  echo "❌ 8.4 FAILED ($ERRORS issues)"
+  exit 1
+fi
 ```
 
-**Expected:** Both checks pass (return 0)
+**Gate:** Exit code must be 0
 
-#### Rule 5: No Fallback Logic
+---
 
+## 8.5 Fallback Pattern Check
+
+**Purpose:** No fallback logic allowed in domain code.
+
+**Script:**
 ```bash
-# Check for fallback patterns
-grep -rn "|| DEFAULT" src/
-grep -rn "|| \[" src/         # Empty array fallback
-grep -rn "|| {}" src/         # Empty object fallback
-grep -rn "??" src/domain/     # Nullish coalescing (needs review)
+#!/bin/bash
+# 8.5-fallback-check.sh
+
+echo "=== 8.5 Fallback Pattern Check ==="
+ERRORS=0
+
+# Check for || DEFAULT patterns
+DEFAULTS=$(grep -rn "|| DEFAULT" src/domain/ 2>/dev/null | wc -l)
+if [ $DEFAULTS -gt 0 ]; then
+  echo "❌ Found $DEFAULTS || DEFAULT patterns:"
+  grep -rn "|| DEFAULT" src/domain/
+  ERRORS=$((ERRORS + DEFAULTS))
+fi
+
+# Check for || [] patterns
+ARRAYS=$(grep -rn "|| \[\]" src/domain/ 2>/dev/null | wc -l)
+if [ $ARRAYS -gt 0 ]; then
+  echo "❌ Found $ARRAYS || [] patterns:"
+  grep -rn "|| \[\]" src/domain/
+  ERRORS=$((ERRORS + ARRAYS))
+fi
+
+# Check for || {} patterns
+OBJECTS=$(grep -rn "|| {}" src/domain/ 2>/dev/null | wc -l)
+if [ $OBJECTS -gt 0 ]; then
+  echo "❌ Found $OBJECTS || {} patterns:"
+  grep -rn "|| {}" src/domain/
+  ERRORS=$((ERRORS + OBJECTS))
+fi
+
+# Check for ?? with literal fallbacks
+NULLISH=$(grep -rn "?? [0-9\"\']" src/domain/ 2>/dev/null | wc -l)
+if [ $NULLISH -gt 0 ]; then
+  echo "⚠️  Found $NULLISH ?? with literal fallbacks (review manually):"
+  grep -rn "?? [0-9\"\']" src/domain/
+fi
+
+echo ""
+if [ $ERRORS -eq 0 ]; then
+  echo "✅ 8.5 PASSED"
+  exit 0
+else
+  echo "❌ 8.5 FAILED ($ERRORS fallback patterns)"
+  exit 1
+fi
 ```
 
-**Expected:** No matches in domain files
+**Gate:** Exit code must be 0
 
 ---
 
-### B. Intelligence Layer (if applicable)
+## 8.6 Expert Attribution Check
 
-#### Decision Web (GNN)
+**Purpose:** All KB nodes must have source expert.
 
+**Script:**
 ```bash
-# Check GNN is initialized
-grep -rn "GNNEngine" src/
-grep -rn "gnn.simulate" src/domain/
+#!/bin/bash
+# 8.6-attribution-check.sh
+
+echo "=== 8.6 Expert Attribution Check ==="
+
+MISSING=$(psql "$DATABASE_URL" -t -c "
+  SELECT COUNT(*)
+  FROM kb_nodes
+  WHERE namespace = '$NAMESPACE'
+    AND (source_expert IS NULL OR source_expert = '');
+")
+
+MISSING=$(echo $MISSING | tr -d ' ')
+
+if [ "$MISSING" -gt 0 ]; then
+  echo "❌ $MISSING nodes missing expert attribution"
+  echo ""
+  echo "Nodes without attribution:"
+  psql "$DATABASE_URL" -c "
+    SELECT id, title
+    FROM kb_nodes
+    WHERE namespace = '$NAMESPACE'
+      AND (source_expert IS NULL OR source_expert = '')
+    LIMIT 10;
+  "
+  exit 1
+else
+  echo "✅ All nodes have expert attribution"
+  echo "✅ 8.6 PASSED"
+  exit 0
+fi
 ```
 
-#### Combinatorial Routing (Attention)
+**Gate:** Exit code must be 0
 
+---
+
+## 8.7 Confidence Score Check
+
+**Purpose:** All KB nodes must have confidence scores.
+
+**Script:**
 ```bash
-# Check attention routing is used
-grep -rn "AttentionRouter" src/
-grep -rn "routeToExpert\|moeRoute" src/domain/
+#!/bin/bash
+# 8.7-confidence-check.sh
+
+echo "=== 8.7 Confidence Score Check ==="
+
+MISSING=$(psql "$DATABASE_URL" -t -c "
+  SELECT COUNT(*)
+  FROM kb_nodes
+  WHERE namespace = '$NAMESPACE'
+    AND confidence IS NULL;
+")
+
+MISSING=$(echo $MISSING | tr -d ' ')
+
+if [ "$MISSING" -gt 0 ]; then
+  echo "❌ $MISSING nodes missing confidence scores"
+  exit 1
+fi
+
+AVG=$(psql "$DATABASE_URL" -t -c "
+  SELECT ROUND(AVG(confidence)::numeric, 2)
+  FROM kb_nodes
+  WHERE namespace = '$NAMESPACE';
+")
+
+AVG=$(echo $AVG | tr -d ' ')
+
+echo "✅ All nodes have confidence scores"
+echo "   Average confidence: $AVG"
+
+if (( $(echo "$AVG < 0.5" | bc -l) )); then
+  echo "⚠️  Average confidence is low (<0.5)"
+fi
+
+echo "✅ 8.7 PASSED"
+exit 0
 ```
 
-#### Scenario Learning (SONA)
+**Gate:** Exit code must be 0
 
+---
+
+## 8.8 Gap Logging Verification
+
+**Purpose:** Gap detection must be active and working.
+
+**Script:**
 ```bash
-# Check SONA is configured
-grep -rn "SonaEngine" src/
-grep -rn "sona.recallPatterns\|sona.storePattern" src/domain/
+#!/bin/bash
+# 8.8-gap-logging-check.sh
+
+echo "=== 8.8 Gap Logging Verification ==="
+ERRORS=0
+
+# Check gap logging function exists in code
+if ! grep -rq "logGap\|log_gap\|recordGap" src/kb/ 2>/dev/null; then
+  echo "❌ No gap logging function found in src/kb/"
+  ERRORS=$((ERRORS + 1))
+else
+  echo "✅ Gap logging function exists"
+fi
+
+# Check kb_gaps table exists
+if ! psql "$DATABASE_URL" -c "SELECT 1 FROM kb_gaps LIMIT 1" 2>/dev/null; then
+  echo "❌ kb_gaps table does not exist or is inaccessible"
+  ERRORS=$((ERRORS + 1))
+else
+  echo "✅ kb_gaps table exists"
+fi
+
+# Check if gaps are being logged (should have some from testing)
+GAP_COUNT=$(psql "$DATABASE_URL" -t -c "SELECT COUNT(*) FROM kb_gaps WHERE namespace = '$NAMESPACE';" 2>/dev/null | tr -d ' ')
+
+if [ -z "$GAP_COUNT" ] || [ "$GAP_COUNT" == "0" ]; then
+  echo "⚠️  No gaps logged yet (normal if no queries have failed)"
+else
+  echo "✅ $GAP_COUNT gaps logged"
+fi
+
+echo ""
+if [ $ERRORS -eq 0 ]; then
+  echo "✅ 8.8 PASSED"
+  exit 0
+else
+  echo "❌ 8.8 FAILED ($ERRORS issues)"
+  exit 1
+fi
 ```
 
----
-
-### C. Expert Attribution
-
-```sql
--- Check all KB nodes have expert attribution
-SELECT COUNT(*) as missing_attribution
-FROM kb_nodes
-WHERE source_expert IS NULL OR source_expert = '';
-
--- Should return 0
-```
+**Gate:** Exit code must be 0
 
 ---
 
-### D. Confidence Scores
+## Master Verification Script
 
-```sql
--- Check all KB nodes have confidence
-SELECT COUNT(*) as missing_confidence
-FROM kb_nodes  
-WHERE confidence IS NULL;
-
--- Should return 0
-
--- Check confidence distribution
-SELECT 
-  CASE 
-    WHEN confidence >= 0.8 THEN 'high'
-    WHEN confidence >= 0.5 THEN 'medium'
-    ELSE 'low'
-  END as level,
-  COUNT(*) as count
-FROM kb_nodes
-GROUP BY level;
-```
-
----
-
-### E. Gap Detection
-
-```sql
--- Check gap logging is active
-SELECT COUNT(*) as gaps_logged
-FROM kb_gaps
-WHERE created_at > NOW() - INTERVAL '1 hour';
-
--- Should show recent gaps if testing included unanswerable queries
-```
-
----
-
-### F. API Source Transparency
-
-```bash
-# Test API endpoints return sources
-curl -s localhost:3000/api/[endpoint] | jq '.sources'
-
-# Should return non-empty array
-```
-
----
-
-### G. UI Source Display
-
-Manual verification:
-- [ ] Results show expert attribution
-- [ ] Confidence levels are displayed
-- [ ] Sources are clickable/verifiable
-
----
-
-## Automated Verification Script
+Run all 8 sub-phases in sequence:
 
 ```bash
 #!/bin/bash
 # scripts/verify-all.sh
 
-echo "=== KB-First Final Verification ==="
+echo "╔═══════════════════════════════════════════════════════════╗"
+echo "║           KB-FIRST PHASE 8: FINAL VERIFICATION            ║"
+echo "╚═══════════════════════════════════════════════════════════╝"
 echo ""
 
-errors=0
+TOTAL_ERRORS=0
+PASSED=0
+FAILED=0
 
-# Rule 1: No hardcoded values
-echo "Checking Rule 1: No hardcoded domain logic..."
-if grep -rqE "= [0-9]+\.[0-9]+" src/domain/ 2>/dev/null; then
-  echo "  ❌ Found potential hardcoded decimals"
-  errors=$((errors + 1))
-else
-  echo "  ✅ No hardcoded decimals found"
-fi
+run_check() {
+  local name=$1
+  local script=$2
 
-# Rule 2: All domain files import kb
-echo "Checking Rule 2: All domain files import kb..."
-for file in src/domain/*.ts; do
-  if [ -f "$file" ] && ! grep -q "from.*kb" "$file"; then
-    echo "  ❌ $file does not import from kb/"
-    errors=$((errors + 1))
+  echo "Running $name..."
+  if bash "$script"; then
+    PASSED=$((PASSED + 1))
+  else
+    FAILED=$((FAILED + 1))
+    TOTAL_ERRORS=$((TOTAL_ERRORS + 1))
   fi
-done
-[ $errors -eq 0 ] && echo "  ✅ All domain files import kb"
+  echo ""
+}
 
-# Rule 3: Returns include kbSources
-echo "Checking Rule 3: Returns include kbSources..."
-missing=$(grep -rL "kbSources" src/domain/*.ts 2>/dev/null | wc -l)
-if [ "$missing" -gt 0 ]; then
-  echo "  ⚠️  $missing files may not return kbSources"
-else
-  echo "  ✅ kbSources present in domain files"
-fi
+run_check "8.1 Code Scan" "scripts/8.1-code-scan.sh"
+run_check "8.2 Import Verification" "scripts/8.2-import-check.sh"
+run_check "8.3 Source Return Check" "scripts/8.3-source-check.sh"
+run_check "8.4 Startup Verification" "scripts/8.4-startup-check.sh"
+run_check "8.5 Fallback Pattern Check" "scripts/8.5-fallback-check.sh"
+run_check "8.6 Expert Attribution" "scripts/8.6-attribution-check.sh"
+run_check "8.7 Confidence Scores" "scripts/8.7-confidence-check.sh"
+run_check "8.8 Gap Logging" "scripts/8.8-gap-logging-check.sh"
 
-# Rule 4: Startup verification
-echo "Checking Rule 4: Startup verification..."
-if grep -q "verifyConnection" src/index.ts && grep -q "process.exit" src/index.ts; then
-  echo "  ✅ Entry point verifies KB"
-else
-  echo "  ❌ Entry point missing KB verification"
-  errors=$((errors + 1))
-fi
+echo "╔═══════════════════════════════════════════════════════════╗"
+echo "║                      RESULTS                              ║"
+echo "╠═══════════════════════════════════════════════════════════╣"
+echo "║  Passed: $PASSED/8                                            ║"
+echo "║  Failed: $FAILED/8                                            ║"
+echo "╠═══════════════════════════════════════════════════════════╣"
 
-# Rule 5: No fallbacks
-echo "Checking Rule 5: No fallback logic..."
-if grep -rqE "\|\| DEFAULT|\|\| \[|\|\| \{\}" src/domain/ 2>/dev/null; then
-  echo "  ❌ Found fallback patterns"
-  errors=$((errors + 1))
-else
-  echo "  ✅ No fallback patterns found"
-fi
-
-echo ""
-echo "=== Results ==="
-if [ $errors -eq 0 ]; then
-  echo "✅ All checks passed!"
+if [ $TOTAL_ERRORS -eq 0 ]; then
+  echo "║  ✅ ALL CHECKS PASSED - APPLICATION COMPLETE              ║"
+  echo "╚═══════════════════════════════════════════════════════════╝"
   exit 0
 else
-  echo "❌ $errors error(s) found"
+  echo "║  ❌ $TOTAL_ERRORS CHECK(S) FAILED - FIX BEFORE COMPLETION       ║"
+  echo "╚═══════════════════════════════════════════════════════════╝"
   exit 1
 fi
 ```
 
 ---
 
-## Quality Gate
+## Swarm Configuration for Phase 8
 
-All items must pass:
+```yaml
+phase_8_swarm:
+  topology: mesh
+  strategy: parallel
+  maxAgents: 8
 
-- [ ] No hardcoded domain values
-- [ ] All domain files import from kb/
-- [ ] All responses include kbSources
-- [ ] Entry point verifies KB first
-- [ ] Entry point exits if KB unavailable
-- [ ] No fallback patterns
-- [ ] All KB nodes have expert attribution
-- [ ] All KB nodes have confidence scores
-- [ ] Gap logging is active
-- [ ] Intelligence layer properly integrated (if applicable)
-- [ ] API endpoints return sources
-- [ ] UI displays sources and confidence
+  agents:
+    - type: specialist
+      name: code-scanner
+      task: "8.1"
+      script: "scripts/8.1-code-scan.sh"
+
+    - type: specialist
+      name: import-checker
+      task: "8.2"
+      script: "scripts/8.2-import-check.sh"
+
+    - type: specialist
+      name: source-checker
+      task: "8.3"
+      script: "scripts/8.3-source-check.sh"
+
+    - type: specialist
+      name: startup-checker
+      task: "8.4"
+      script: "scripts/8.4-startup-check.sh"
+
+    - type: specialist
+      name: fallback-checker
+      task: "8.5"
+      script: "scripts/8.5-fallback-check.sh"
+
+    - type: specialist
+      name: attribution-checker
+      task: "8.6"
+      script: "scripts/8.6-attribution-check.sh"
+
+    - type: specialist
+      name: confidence-checker
+      task: "8.7"
+      script: "scripts/8.7-confidence-check.sh"
+
+    - type: specialist
+      name: gap-checker
+      task: "8.8"
+      script: "scripts/8.8-gap-logging-check.sh"
+
+  parallel_groups:
+    - [code-scanner, import-checker, source-checker, startup-checker]
+    - [fallback-checker, attribution-checker, confidence-checker, gap-checker]
+
+  aggregation:
+    type: all_must_pass
+    on_failure: report_and_halt
+```
 
 ---
 
-## Completion
+## Exit Criteria
 
-When all checks pass:
+All 8 sub-phases must pass:
 
-**🎉 The KB-First application is complete!**
+```
+[ ] 8.1 Code Scan: No hardcoded values
+[ ] 8.2 Import Check: All domain files import kb/
+[ ] 8.3 Source Check: All returns have kbSources
+[ ] 8.4 Startup Check: verifyConnection called first
+[ ] 8.5 Fallback Check: No fallback patterns
+[ ] 8.6 Attribution Check: All nodes have experts
+[ ] 8.7 Confidence Check: All nodes have scores
+[ ] 8.8 Gap Logging: Gap detection active
+```
 
-The application:
-- Grounds all responses in expert knowledge
-- Provides full traceability for every answer
-- Detects and logs knowledge gaps
-- Cannot function without its knowledge base
-- Uses the appropriate intelligence layer for its pattern
+**Only mark complete when ALL boxes are checked.**
 
 ---
 
-## Post-Completion
+## Completion & Delta Report
 
-### Maintenance Tasks
+When all checks pass, generate the final delta report:
 
-1. **Monitor gaps** — Review kb_gaps table regularly
-2. **Update KB** — Add content to fill gaps
-3. **Track confidence** — Monitor average confidence over time
-4. **Review sources** — Ensure expert sources remain valid
-
-### Enhancement Opportunities
-
-1. **Add SONA learning** — If not already present
-2. **Improve routing** — Add MoE if queries vary widely
-3. **Model relationships** — Add GNN if decisions interconnect
-4. **Expand KB** — More experts, more depth
+```
+╔═══════════════════════════════════════════════════════════╗
+║              🎉 KB-FIRST TRANSFORMATION COMPLETE          ║
+╠═══════════════════════════════════════════════════════════╣
+║                                                           ║
+║  BEFORE (Phase 0)          AFTER (Phase 8)                ║
+║  ──────────────────        ────────────────               ║
+║  KB Quality:     47        KB Quality:     99             ║
+║  App Compliance: 32        App Compliance: 100            ║
+║                                                           ║
+║  DELTA: +52 KB | +68 App                                  ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  Phase Completion:                                        ║
+║    ✅ Phase 0: Assessment                                 ║
+║    ✅ Phase 1: Storage                                    ║
+║    ✅ Phase 2: KB Creation (8/8 sub-phases)               ║
+║    ✅ Phase 3: Persistence                                ║
+║    ✅ Phase 4: Visualization                              ║
+║    ✅ Phase 5: Integration                                ║
+║    ✅ Phase 6: Scaffold                                   ║
+║    ✅ Phase 7: Build (7/7 sub-phases)                     ║
+║    ✅ Phase 8: Verification (8/8 sub-phases)              ║
+║                                                           ║
+╠═══════════════════════════════════════════════════════════╣
+║  The application now:                                     ║
+║    • Grounds all responses in expert knowledge            ║
+║    • Provides full traceability for every answer          ║
+║    • Detects and logs knowledge gaps                      ║
+║    • Cannot function without its knowledge base           ║
+║    • Uses appropriate intelligence layer                  ║
+╚═══════════════════════════════════════════════════════════╝
+```

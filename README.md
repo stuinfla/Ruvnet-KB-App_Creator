@@ -1,4 +1,7 @@
-# KB-First Application Builder v3.0
+Updated: 2026-01-01 20:45:00 EST | Version 4.1.0
+Created: 2026-01-01 15:28:53 EST
+
+# KB-First Application Builder v4.1
 
 ## Build Intelligent Applications on Expert Knowledge
 
@@ -117,9 +120,9 @@ KB-First leverages the full **RuVector** stack for intelligent applications:
 
 ---
 
-## 🏗️ The 8-Phase Build Process
+## 🏗️ The 9-Phase Build Process
 
-KB-First applications are built through a rigorous 8-phase process:
+KB-First applications are built through a rigorous 9-phase process with **29 sub-phases** and **hard gates**:
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/stuinfla/Ruvnet-KB-App_Creator/main/assets/build-process.svg?v=2" alt="The 8-Phase Build Process" width="800">
@@ -168,16 +171,19 @@ KB-First applications are built through a rigorous 8-phase process:
 
 ### Phase Summary
 
-| Phase | Name | Purpose | Quality Gate |
-|-------|------|---------|--------------|
-| 1 | Storage Setup | Start PostgreSQL + ruvector | Connection verified |
-| 2 | KB Creation | Build world-class knowledge base | Score ≥98/100 |
-| 3 | Persistence | Store with embeddings | Semantic search works |
-| 4 | Visualization | Interactive 3D tree | Navigation works |
-| 5 | Integration Layer | TypeScript SDK | All functions compile |
-| 6 | Scaffold | Project structure | KB enforcement in place |
-| 7 | Build | Implement with KB enforcement | No hardcoded values |
-| 8 | Verification | Final check | All rules pass |
+| Phase | Name | Sub-Phases | Purpose | Quality Gate |
+|-------|------|------------|---------|--------------|
+| 0 | Assessment | 6 | Score existing KB/app (brownfield) | ⛔ User types "PROCEED" |
+| 1 | Storage Setup | - | Start PostgreSQL + ruvector | Connection verified |
+| 2 | KB Creation | 8 | Build world-class knowledge base | Score ≥98/100 |
+| 3 | Persistence | - | Store with embeddings | Semantic search works |
+| 4 | Visualization | - | Interactive 3D tree | Navigation works |
+| 5 | Integration Layer | - | TypeScript SDK | All functions compile |
+| 6 | Scaffold | - | Project structure | KB enforcement in place |
+| 7 | Build | 7 | Implement with KB enforcement | No hardcoded values |
+| 8 | Verification | 8 | Final check | All 8 checks pass |
+
+**Total: 9 phases, 29 sub-phases, hard gates at every boundary.**
 
 ---
 
@@ -418,10 +424,14 @@ Then tell Claude:
 ## 📁 Repository Structure
 
 ```
-kb-first-v30/
+kb-first-v41/
 ├── README.md                     # This file
-├── SKILL.md                      # Main skill documentation
+├── SKILL.md                      # Main skill documentation (v4.1)
+├── .github/
+│   └── workflows/
+│       └── kb-first-ci.yml       # CI/CD quality gates
 ├── phases/                       # Phase-by-phase instructions
+│   ├── 00-assessment.md          # Greenfield + Brownfield assessment
 │   ├── 01-storage.md
 │   ├── 02-kb-creation.md
 │   ├── 03-persistence.md
@@ -429,31 +439,46 @@ kb-first-v30/
 │   ├── 05-integration.md
 │   ├── 06-scaffold.md
 │   ├── 07-build.md
-│   └── 08-verification.md
+│   ├── 08-verification.md        # 8 numbered sub-phases (8.1-8.8)
+│   └── testing.md                # Comprehensive testing strategy
 ├── patterns/                     # Intelligence pattern guides
 │   ├── decision-web.md           # GNN-first pattern
 │   ├── combinatorial-routing.md  # Attention-first pattern
 │   ├── scenario-learning.md      # SONA-first pattern
 │   └── continuous-optimization.md
 ├── templates/                    # Code templates
+│   ├── intentions.md             # Greenfield project intentions
 │   ├── schema.sql                # PostgreSQL schema
 │   ├── kb-client.ts              # TypeScript KB client
 │   ├── gnn-engine.ts             # GNN implementation
 │   ├── attention-router.ts       # Attention routing
-│   └── sona-config.ts            # SONA configuration
+│   ├── sona-config.ts            # SONA configuration
+│   ├── code-analysis.ts          # Code analysis engine
+│   └── federated-kb-learner.ts   # Federated KB learning
 ├── prompts/                      # AI prompts for KB creation
 │   ├── expert-discovery.md
 │   ├── completeness-audit.md
 │   └── quality-critique.md
-├── scripts/                      # Utility scripts
-│   ├── init-db.sh
-│   ├── verify-enforcement.sh
-│   └── gap-report.sql
+├── scripts/                      # Verification scripts
+│   ├── 8.1-code-scan.sh          # No hardcoded values
+│   ├── 8.2-import-check.sh       # KB imports required
+│   ├── 8.3-source-returns.sh     # kbSources in returns
+│   ├── 8.4-startup-verify.sh     # KB connection at startup
+│   ├── 8.5-fallback-check.sh     # No fallback patterns
+│   ├── 8.6-attribution.sh        # Expert attribution
+│   ├── 8.7-confidence.sh         # Confidence scores
+│   ├── 8.8-gap-logging.sh        # Gap detection
+│   ├── init-project.sh           # Project initialization
+│   └── verify-enforcement.sh     # Full enforcement check
 ├── references/                   # Technical references
 │   ├── ruvector-functions.md
 │   ├── attention-mechanisms.md
 │   ├── sona-config.md
-│   └── hooks-integration.md
+│   ├── hooks-integration.md
+│   ├── hard-gates.md             # Gate enforcement rules
+│   ├── swarm-config.md           # Parallel execution config
+│   ├── error-recovery.md         # Rollback procedures
+│   └── troubleshooting.md        # Quick diagnosis guide
 ├── examples/                     # Working examples
 │   ├── retirement-advisor/
 │   ├── travel-optimizer/
