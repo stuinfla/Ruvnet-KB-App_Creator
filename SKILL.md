@@ -1,13 +1,145 @@
-Updated: 2026-01-02 10:35:00 EST | Version 6.2.0
+Updated: 2026-01-02 13:15:00 EST | Version 6.4.0
 Created: 2026-01-01 15:00:00 EST
 
-# RuvNet KB-First Application Builder v6.2
+# RuvNet KB-First Application Builder v6.4
 
 ## Score-Driven Architecture: Scoring IS Enforcement + UX Excellence
 
-**Version:** 6.2.0
+**Version:** 6.4.0
 **NPM Package:** `ruvnet-kb-first`
-**Philosophy:** Every operation requires baseline scoring. Every change shows delta. Negative delta BLOCKS progress. No shortcuts. **NEW:** Applications must be excellent, not just functional.
+**Philosophy:** Every operation requires baseline scoring. Every change shows delta. Negative delta BLOCKS progress. No shortcuts. Applications must be excellent, not just functional.
+
+---
+
+## What's New in v6.3.0 - Three-Tier KB Architecture
+
+| Feature | Description |
+|---------|-------------|
+| **Three-Tier KB System** | Full (230K+) → Starter (500) → Structural fallback |
+| **Unified Dashboard** | `npx ruvnet-kb-first` shows comprehensive project status |
+| **KB Auto-Detection** | Automatically finds and connects to available KB |
+| **Graceful Degradation** | Works without KB, with increasing capability as KB added |
+| **`--kb` Connection Flag** | Connect to existing KB schemas (e.g., `--kb ask_ruvnet`) |
+| **Live KB Stats** | Dashboard shows real-time entry count and connection status |
+| **npx-First Distribution** | Always use `npx ruvnet-kb-first@latest` - no global installs |
+
+### KB Tier System
+
+| Tier | Description | Entries | Features |
+|------|-------------|---------|----------|
+| **Tier 1: Full KB** | ruvector-postgres on port 5435 | 230K+ | Semantic search, KB citations, gap detection |
+| **Tier 2: Starter KB** | Bundled in .ruvector/ | 500 | Basic semantic search, core patterns |
+| **Tier 3: Structural** | No KB required | 0 | Directory scoring, phase tracking, setup wizard |
+
+### Quick Start (v6.3)
+
+```bash
+# Run from any project directory
+npx ruvnet-kb-first@latest
+
+# Connect to existing KB
+npx ruvnet-kb-first init --kb ask_ruvnet
+
+# Check status
+npx ruvnet-kb-first status
+```
+
+### MCP Server Configuration
+
+```json
+{
+  "mcpServers": {
+    "ruvnet-kb-first": {
+      "command": "npx",
+      "args": ["ruvnet-kb-first@latest", "mcp"]
+    }
+  }
+}
+```
+
+---
+
+## What's New in v6.4.0 - KB Quality Pipeline
+
+| Feature | Description |
+|---------|-------------|
+| **KB Ingestion Template** | 6-step process with SHA-256 deduplication, auto-categorization, quality scoring |
+| **KB Quality Audit** | 7-dimension scoring: embeddings, deduplication, categories, structure, content, recall, indexes |
+| **KB Optimization Script** | ruvector-native optimization with `cosine_distance()` and `semantic_search()` functions |
+| **15 Auto-Categories** | Automatic categorization: agents, workflows, embeddings, memory, llm, mcp, swarms, etc. |
+| **Quality Scoring 0-100** | Content length, formatting, completeness scoring per entry |
+
+### KB Quality Pipeline
+
+When creating ANY knowledge base, the following process is **ALWAYS** followed:
+
+```
+1. INGEST     → scripts/kb-ingest-template.js (SHA-256 dedup, 15 categories, quality 0-100)
+2. AUDIT      → scripts/kb-quality-audit.js (7-dimension scoring, grade A-F)
+3. OPTIMIZE   → scripts/kb-optimize.sql (indexes, views, semantic_search function)
+4. VERIFY     → Re-audit until score ≥ 85 (B+ or higher)
+```
+
+### KB Quality Dimensions (7 Total)
+
+| Dimension | Weight | What It Measures |
+|-----------|--------|------------------|
+| Embedding Quality | 15% | Completeness, variance, dimensionality |
+| Deduplication | 15% | Hash-based duplicate detection |
+| Category Coverage | 15% | Balanced distribution across 15 categories |
+| Structural Integrity | 15% | Hierarchy, relationships, navigation |
+| Content Quality | 15% | Length, formatting, source attribution |
+| Recall Performance | 15% | Semantic search returns relevant results |
+| Index Optimization | 10% | Supporting indexes, materialized views |
+
+### KB Ingestion Template
+
+```bash
+# Ingest content into optimized KB
+node scripts/kb-ingest-template.js --schema your_project
+
+# Features:
+# - SHA-256 content hashing for deduplication
+# - 15 category auto-classification
+# - Quality scoring 0-100 per entry
+# - ruvector_embed() for 384-dim embeddings
+```
+
+### KB Quality Audit
+
+```bash
+# Score any existing KB
+node scripts/kb-quality-audit.js --schema ask_ruvnet
+
+# Output: Grade (A-F), 7-dimension breakdown, specific fixes
+```
+
+### KB Optimization
+
+```bash
+# Run optimization script (ruvector-native)
+PGPASSWORD=guruKB2025 psql -h localhost -p 5435 -U postgres -f scripts/kb-optimize.sql
+
+# Creates:
+# - cosine_distance(real[], real[]) function
+# - semantic_search(query, limit, max_distance) function
+# - Optimized indexes and materialized views
+# - ask_ruvnet.kb view for high-quality entries
+```
+
+### Semantic Search Usage
+
+```sql
+-- Simple semantic search
+SELECT * FROM ask_ruvnet.semantic_search('how to create agents', 5);
+
+-- Direct cosine distance
+SELECT title, cosine_distance(embedding, ruvector_embed('query')::real[]) as dist
+FROM ask_ruvnet.kb ORDER BY dist LIMIT 10;
+
+-- Category-filtered search
+SELECT * FROM ask_ruvnet.kb WHERE category = 'agents' LIMIT 10;
+```
 
 ---
 
@@ -23,7 +155,7 @@ Created: 2026-01-01 15:00:00 EST
 | **Critical Review Questions** | How good? How could it be better? Where falling down? What would excellent look like? |
 | **Playwright Auto-Install** | Offers to install Playwright if not present |
 
-### The 6 MCP Tools (v6.2)
+### The 7 MCP Tools (v6.3)
 
 | Tool | Purpose | When to Use |
 |------|---------|-------------|
@@ -32,7 +164,8 @@ Created: 2026-01-01 15:00:00 EST
 | `kb_first_confirm` | User confirms readiness to proceed | Before execution |
 | `kb_first_execute` | Execute plan phase by phase | After confirmation |
 | `kb_first_verify` | Compare predicted vs actual, recursive until 98+ | After execution |
-| `kb_first_ux_review` | Playwright-based visual quality audit | **NEW** - for UX excellence |
+| `kb_first_ux_review` | Playwright-based visual quality audit | For UX excellence |
+| `kb_first_status` | **NEW** Check KB connection and tier status | Diagnostics |
 
 ### UX Quality Criteria (Scored in UX Review)
 

@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="900" height="600">
+  <defs>
+    <linearGradient id="tier1Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="tier2Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="tier3Grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6b7280;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4b5563;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="600" fill="#0f172a"/>
+
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="24" font-weight="bold">KB DISCOVERY FLOW</text>
+  <text x="450" y="65" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="14">Three-Tier Graceful Degradation</text>
+
+  <!-- Start Node -->
+  <rect x="350" y="90" width="200" height="50" rx="25" fill="#6366f1" filter="url(#shadow)"/>
+  <text x="450" y="122" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="14" font-weight="bold">npx ruvnet-kb-first</text>
+
+  <!-- Arrow down -->
+  <path d="M450 140 L450 170" stroke="#6366f1" stroke-width="3" fill="none"/>
+  <polygon points="450,180 445,170 455,170" fill="#6366f1"/>
+
+  <!-- Check Local KB -->
+  <rect x="300" y="185" width="300" height="60" rx="8" fill="#1e293b" stroke="#6366f1" stroke-width="2"/>
+  <text x="450" y="210" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="12">Check: ruvector-postgres</text>
+  <text x="450" y="230" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">running on port 5435?</text>
+
+  <!-- YES branch to Tier 1 -->
+  <path d="M600 215 L680 215 L680 300" stroke="#10b981" stroke-width="2" fill="none"/>
+  <text x="620" y="205" fill="#10b981" font-family="system-ui, sans-serif" font-size="12" font-weight="bold">YES</text>
+  <polygon points="680,310 675,300 685,300" fill="#10b981"/>
+
+  <!-- Tier 1 Box -->
+  <rect x="600" y="315" width="250" height="130" rx="12" fill="url(#tier1Grad)" filter="url(#shadow)"/>
+  <text x="725" y="345" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="16" font-weight="bold">TIER 1: FULL KB</text>
+  <text x="725" y="370" text-anchor="middle" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="12">230K+ entries</text>
+  <line x1="620" y1="385" x2="830" y2="385" stroke="#d1fae5" stroke-opacity="0.3"/>
+  <text x="630" y="405" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="11">* Semantic search</text>
+  <text x="630" y="422" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="11">* KB citations</text>
+  <text x="630" y="439" fill="#d1fae5" font-family="system-ui, sans-serif" font-size="11">* Gap detection</text>
+
+  <!-- NO branch -->
+  <path d="M450 245 L450 280" stroke="#f59e0b" stroke-width="2" fill="none"/>
+  <text x="430" y="268" fill="#f59e0b" font-family="system-ui, sans-serif" font-size="12" font-weight="bold">NO</text>
+  <polygon points="450,290 445,280 455,280" fill="#f59e0b"/>
+
+  <!-- Check Starter KB -->
+  <rect x="300" y="295" width="300" height="60" rx="8" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+  <text x="450" y="320" text-anchor="middle" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="12">Check: Bundled starter KB</text>
+  <text x="450" y="340" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11">exists in .ruvector/?</text>
+
+  <!-- YES branch to Tier 2 -->
+  <path d="M300 325 L220 325 L220 415" stroke="#f59e0b" stroke-width="2" fill="none"/>
+  <text x="245" y="315" fill="#f59e0b" font-family="system-ui, sans-serif" font-size="12" font-weight="bold">YES</text>
+  <polygon points="220,425 215,415 225,415" fill="#f59e0b"/>
+
+  <!-- Tier 2 Box -->
+  <rect x="50" y="430" width="250" height="130" rx="12" fill="url(#tier2Grad)" filter="url(#shadow)"/>
+  <text x="175" y="460" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="16" font-weight="bold">TIER 2: STARTER</text>
+  <text x="175" y="485" text-anchor="middle" fill="#fef3c7" font-family="system-ui, sans-serif" font-size="12">500 core patterns</text>
+  <line x1="70" y1="500" x2="280" y2="500" stroke="#fef3c7" stroke-opacity="0.3"/>
+  <text x="80" y="520" fill="#fef3c7" font-family="system-ui, sans-serif" font-size="11">* Basic semantic search</text>
+  <text x="80" y="537" fill="#fef3c7" font-family="system-ui, sans-serif" font-size="11">* Core patterns only</text>
+  <text x="80" y="554" fill="#fef3c7" font-family="system-ui, sans-serif" font-size="11">* Zero config</text>
+
+  <!-- NO branch to Tier 3 -->
+  <path d="M450 355 L450 425" stroke="#6b7280" stroke-width="2" fill="none"/>
+  <text x="430" y="395" fill="#6b7280" font-family="system-ui, sans-serif" font-size="12" font-weight="bold">NO</text>
+  <polygon points="450,435 445,425 455,425" fill="#6b7280"/>
+
+  <!-- Tier 3 Box -->
+  <rect x="325" y="440" width="250" height="130" rx="12" fill="url(#tier3Grad)" filter="url(#shadow)"/>
+  <text x="450" y="470" text-anchor="middle" fill="white" font-family="system-ui, sans-serif" font-size="16" font-weight="bold">TIER 3: STRUCTURAL</text>
+  <text x="450" y="495" text-anchor="middle" fill="#e5e7eb" font-family="system-ui, sans-serif" font-size="12">No KB required</text>
+  <line x1="345" y1="510" x2="555" y2="510" stroke="#e5e7eb" stroke-opacity="0.3"/>
+  <text x="355" y="530" fill="#e5e7eb" font-family="system-ui, sans-serif" font-size="11">* Directory scoring</text>
+  <text x="355" y="547" fill="#e5e7eb" font-family="system-ui, sans-serif" font-size="11">* Phase tracking</text>
+  <text x="355" y="564" fill="#e5e7eb" font-family="system-ui, sans-serif" font-size="11">* Offers setup options</text>
+
+  <!-- Legend -->
+  <rect x="620" y="480" width="230" height="80" rx="8" fill="#1e293b" stroke="#475569" stroke-width="1"/>
+  <text x="735" y="502" text-anchor="middle" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="11" font-weight="bold">FALLBACK CHAIN</text>
+  <circle cx="645" cy="522" r="6" fill="#10b981"/>
+  <text x="660" y="526" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="10">Tier 1</text>
+  <text x="700" y="526" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">--&gt;</text>
+  <circle cx="725" cy="522" r="6" fill="#f59e0b"/>
+  <text x="740" y="526" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="10">Tier 2</text>
+  <text x="780" y="526" fill="#94a3b8" font-family="system-ui, sans-serif" font-size="10">--&gt;</text>
+  <circle cx="805" cy="522" r="6" fill="#6b7280"/>
+  <text x="820" y="526" fill="#e2e8f0" font-family="system-ui, sans-serif" font-size="10">Tier 3</text>
+  <text x="735" y="548" text-anchor="middle" fill="#64748b" font-family="system-ui, sans-serif" font-size="9">Graceful degradation</text>
+</svg>
