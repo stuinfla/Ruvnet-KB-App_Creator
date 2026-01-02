@@ -1,6 +1,6 @@
 {
   "name": "ruvnet-kb-first",
-  "version": "6.4.0",
+  "version": "6.5.0",
   "description": "RuvNet KB-First Application Builder - Build intelligent applications on expert knowledge",
   "type": "module",
   "main": "src/index.js",
@@ -48,6 +48,7 @@
     "url": "https://github.com/ruvnet/kb-first-builder/issues"
   },
   "dependencies": {
+    "@ruvector/edge-full": "^0.1.0",
     "agentic-flow": "^2.0.1-alpha.43",
     "chalk": "^5.3.0",
     "claude-flow": "^2.7.47",
@@ -81,6 +82,7 @@
     "templates/",
     "scripts/",
     "install/",
+    "kb-data/",
     "README.md",
     "SKILL.md"
   ]

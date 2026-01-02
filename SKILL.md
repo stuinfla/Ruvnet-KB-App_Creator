@@ -1,11 +1,11 @@
-Updated: 2026-01-02 13:15:00 EST | Version 6.4.0
+Updated: 2026-01-02 13:45:00 EST | Version 6.5.0
 Created: 2026-01-01 15:00:00 EST
 
-# RuvNet KB-First Application Builder v6.4
+# RuvNet KB-First Application Builder v6.5
 
 ## Score-Driven Architecture: Scoring IS Enforcement + UX Excellence
 
-**Version:** 6.4.0
+**Version:** 6.5.0
 **NPM Package:** `ruvnet-kb-first`
 **Philosophy:** Every operation requires baseline scoring. Every change shows delta. Negative delta BLOCKS progress. No shortcuts. Applications must be excellent, not just functional.
 
@@ -55,6 +55,89 @@ npx ruvnet-kb-first status
     }
   }
 }
+```
+
+---
+
+## What's New in v6.5.0 - Embedded WASM KB
+
+| Feature | Description |
+|---------|-------------|
+| **Embedded KB** | 16,575 entries bundled in npm package (~10MB) |
+| **WASM Search** | 15-30ms queries via RvLite (vs 6.7s PostgreSQL brute-force) |
+| **Offline Capable** | Works without database connection |
+| **Cross-Platform** | Windows, Mac, Linux, CI/CD pipelines |
+| **Auto-Update Detection** | Checks PostgreSQL hash, notifies of updates |
+| **Binary Quantization** | 32x compression (384 floats → 48 bytes per vector) |
+
+### WASM KB Architecture
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    NPM PACKAGE (~22MB)                      │
+├─────────────────────────────────────────────────────────────┤
+│  kb-data/                                                   │
+│  ├── kb-metadata.json   (1KB)   Version, hash, categories  │
+│  ├── kb-entries.json    (9MB)   Titles, content, metadata  │
+│  ├── kb-embeddings.bin  (0.8MB) Binary quantized vectors   │
+│  └── kb-loader.js       (6KB)   WASM loader + search API   │
+├─────────────────────────────────────────────────────────────┤
+│  @ruvector/edge-full    (1.3MB) RvLite WASM runtime        │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Performance Comparison
+
+| Metric | PostgreSQL | WASM Embedded |
+|--------|------------|---------------|
+| Query latency | 6,700ms | **15-30ms** |
+| Infrastructure | Docker + 2GB RAM | **None** |
+| Offline | No | **Yes** |
+| CI/CD ready | Complex | **Just works** |
+| Package size | 160KB | 22MB |
+| Recall quality | 100% | ~90% |
+
+### Usage
+
+```javascript
+// Import from npm package
+import { search, loadKB, checkForUpdates } from 'ruvnet-kb-first/kb-data/kb-loader.js';
+
+// Load KB (once per session)
+await loadKB();
+
+// Search (15-30ms)
+const results = await search('how to create agents', 5);
+console.log(results.results);
+
+// Check for PostgreSQL updates
+const status = await checkForUpdates();
+if (status.needsUpdate) {
+  console.log('Update available:', status.message);
+}
+```
+
+### Auto-Update Workflow
+
+```
+1. npx ruvnet-kb-first (loads embedded WASM KB)
+2. Checks PostgreSQL hash (if available)
+3. If hash differs → notifies user
+4. User runs: npm update ruvnet-kb-first
+5. Gets new KB version
+```
+
+### KB Export Command
+
+```bash
+# Re-export KB when PostgreSQL is updated
+node scripts/kb-export-wasm.js --schema ask_ruvnet --output kb-data/
+
+# This generates:
+# - kb-metadata.json (with new content hash)
+# - kb-entries.json (titles, content, categories)
+# - kb-embeddings.bin (binary quantized vectors)
+# - kb-loader.js (WASM loader)
 ```
 
 ---

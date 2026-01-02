@@ -1,0 +1,71 @@
+{
+  "version": "1.0.0",
+  "schema": "ask_ruvnet",
+  "exportedAt": "2026-01-02T18:29:18.233Z",
+  "totalEntries": 16575,
+  "embeddingDim": 384,
+  "quantization": "binary",
+  "categories": [
+    {
+      "name": "general",
+      "count": 8502
+    },
+    {
+      "name": "agents",
+      "count": 4443
+    },
+    {
+      "name": "vector-db",
+      "count": 882
+    },
+    {
+      "name": "swarms",
+      "count": 735
+    },
+    {
+      "name": "neural",
+      "count": 414
+    },
+    {
+      "name": "mcp",
+      "count": 259
+    },
+    {
+      "name": "deployment",
+      "count": 257
+    },
+    {
+      "name": "sparc",
+      "count": 236
+    },
+    {
+      "name": "github",
+      "count": 214
+    },
+    {
+      "name": "memory",
+      "count": 206
+    },
+    {
+      "name": "performance",
+      "count": 184
+    },
+    {
+      "name": "security",
+      "count": 127
+    },
+    {
+      "name": "reinforcement-learning",
+      "count": 81
+    },
+    {
+      "name": "llm",
+      "count": 22
+    },
+    {
+      "name": "consensus",
+      "count": 13
+    }
+  ],
+  "contentHash": "67818fd61d6327c3"
+}
