@@ -1,9 +1,12 @@
-Updated: 2026-01-01 20:45:00 EST | Version 4.1.0
+Updated: 2026-01-02 10:20:00 EST | Version 6.0.0
 Created: 2026-01-01 15:28:53 EST
 
-# KB-First Application Builder v4.1
+# RuvNet KB-First Application Builder v6.0
 
-## Build Intelligent Applications on Expert Knowledge
+## Score-Driven Architecture: Measurement IS Enforcement
+
+[![npm version](https://img.shields.io/npm/v/ruvnet-kb-first.svg)](https://www.npmjs.com/package/ruvnet-kb-first)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <p align="center">
   <img src="assets/kb-first-architecture.svg" alt="KB-First Architecture" width="800">
@@ -53,6 +56,87 @@ Created: 2026-01-01 15:28:53 EST
 **KB-First** is a methodology and skill for building applications where **curated expert knowledge drives intelligent decision-making**. Every response is grounded in verified sources. Every decision can be traced. Every gap is detected and logged.
 
 This is **not just RAG** (Retrieval-Augmented Generation). RAG retrieves context to supplement responses. KB-First applications treat the knowledge base as the **authoritative source** — if it's not in the KB, the system says so.
+
+---
+
+## 🚀 Quick Start (v6.0 - Score-Driven)
+
+### MCP Server (Recommended)
+
+Add to your Claude Code `settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "ruvnet-kb-first": {
+      "command": "npx",
+      "args": ["ruvnet-kb-first", "mcp"]
+    }
+  }
+}
+```
+
+Then use the 4 MCP tools:
+
+```
+kb_first_assess    # ALWAYS FIRST - establish baseline score
+kb_first_phase 0   # Get phase guidance (shows baseline reminder)
+# ... do the work ...
+kb_first_delta     # Compare scores - BLOCKS if regression
+kb_first_gate 0    # Pass gate, proceed to next phase
+```
+
+### NPX (CLI Wrapper)
+
+```bash
+# Start MCP server
+npx ruvnet-kb-first mcp
+
+# Legacy CLI commands still work
+npx ruvnet-kb-first score
+npx ruvnet-kb-first status
+```
+
+### The Score-Driven Workflow
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  1. kb_first_assess  →  Baseline: 47/100 (Grade: D)          │
+│  2. kb_first_phase   →  Phase 3: KB Population tasks         │
+│  3. [Do the work]    →  Add content, generate embeddings     │
+│  4. kb_first_delta   →  Current: 62/100, Delta: +15 ✓ PASS   │
+│  5. kb_first_gate    →  Gate passed, proceed to Phase 4      │
+│  6. REPEAT           →  New baseline: 62/100                 │
+└──────────────────────────────────────────────────────────────┘
+```
+
+**Key Rule:** Negative delta BLOCKS progress. No shortcuts.
+
+### Legacy Options
+
+```json
+{
+  "mcpServers": {
+    "ruvnet-kb-first": {
+      "command": "npx",
+      "args": ["ruvnet-kb-first", "mcp"]
+    }
+  }
+}
+```
+
+---
+
+## 📦 CLI Commands
+
+| Command | Description |
+|---------|-------------|
+| `ruvnet-kb-first init` | Initialize KB-First structure in project |
+| `ruvnet-kb-first status` | Show project status and phase progress |
+| `ruvnet-kb-first score` | Calculate compliance score (0-100) |
+| `ruvnet-kb-first verify` | Run verification checks |
+| `ruvnet-kb-first phase <n>` | Run or view specific phase (0-11) |
+| `ruvnet-kb-first hooks` | Manage KB-First enforcement hooks |
 
 ---
 
@@ -120,9 +204,9 @@ KB-First leverages the full **RuVector** stack for intelligent applications:
 
 ---
 
-## 🏗️ The 9-Phase Build Process
+## 🏗️ The 12-Phase Build Process
 
-KB-First applications are built through a rigorous 9-phase process with **29 sub-phases** and **hard gates**:
+KB-First applications are built through a rigorous 12-phase process with **57 sub-phases** and **hard gates**:
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/stuinfla/Ruvnet-KB-App_Creator/main/assets/build-process.svg?v=2" alt="The 8-Phase Build Process" width="800">
@@ -174,7 +258,8 @@ KB-First applications are built through a rigorous 9-phase process with **29 sub
 | Phase | Name | Sub-Phases | Purpose | Quality Gate |
 |-------|------|------------|---------|--------------|
 | 0 | Assessment | 6 | Score existing KB/app (brownfield) | ⛔ User types "PROCEED" |
-| 1 | Storage Setup | - | Start PostgreSQL + ruvector | Connection verified |
+| 1 | Storage Setup | 6 | Start PostgreSQL + ruvector | Connection verified |
+| 1.5 | Hooks Setup | 4 | RuVector hooks for KB enforcement | Hook verify passes |
 | 2 | KB Creation | 8 | Build world-class knowledge base | Score ≥98/100 |
 | 3 | Persistence | - | Store with embeddings | Semantic search works |
 | 4 | Visualization | - | Interactive 3D tree | Navigation works |
@@ -182,8 +267,11 @@ KB-First applications are built through a rigorous 9-phase process with **29 sub
 | 6 | Scaffold | - | Project structure | KB enforcement in place |
 | 7 | Build | 7 | Implement with KB enforcement | No hardcoded values |
 | 8 | Verification | 8 | Final check | All 8 checks pass |
+| 9 | Security | 6 | Security audit & hardening | 0 critical/high issues |
+| 10 | Documentation | 6 | Complete docs & versioning | All docs complete |
+| 11 | Deployment | 6 | Production with public access | Go-live verified |
 
-**Total: 9 phases, 29 sub-phases, hard gates at every boundary.**
+**Total: 12 phases, 57 sub-phases, hard gates at every boundary.**
 
 ---
 
@@ -385,9 +473,48 @@ Every KB-First application fits one of four patterns. The pattern determines you
 ### Prerequisites
 - Docker
 - Node.js 18+
-- Claude Code (optional, for skill usage)
+- Python 3 (for hooks)
+- Claude Code
 
-### Installation
+### Option 1: Global Installation (Recommended)
+
+Install KB-First as a skill available in ALL your projects:
+
+```bash
+# Clone the repository
+git clone https://github.com/stuinfla/Ruvnet-KB-App_Creator.git
+cd Ruvnet-KB-App_Creator
+
+# Install globally
+./install/install-global.sh
+```
+
+This installs:
+- `/kb-first` command in Claude Code
+- Hook scripts for automatic KB enforcement
+- Skill documentation in `~/.claude/skills/`
+
+Then in any project, just type:
+```
+/kb-first
+```
+
+### Option 2: Project-Level Installation
+
+Initialize KB-First in a specific project:
+
+```bash
+# In your project directory
+curl -sSL https://raw.githubusercontent.com/stuinfla/Ruvnet-KB-App_Creator/main/install/init-project.sh | bash
+```
+
+Or manually:
+```bash
+git clone https://github.com/stuinfla/Ruvnet-KB-App_Creator.git
+./Ruvnet-KB-App_Creator/install/init-project.sh
+```
+
+### Option 3: Manual Setup
 
 ```bash
 # Clone the repository
@@ -405,18 +532,20 @@ export DATABASE_URL="postgres://postgres:secret@localhost:5432/postgres"
 
 # Initialize schema
 psql $DATABASE_URL -f templates/schema.sql
+
+# Install hooks (Phase 1.5)
+npx @ruvector/cli hooks init
+npx @ruvector/cli hooks install
 ```
 
-### As a Claude Skill
+### Usage
 
-Copy to your Claude skills directory:
 ```bash
-cp -r . ~/.claude/skills/user/kb-first-v30
-```
-
-Then tell Claude:
-```
-"Apply KB-First 3.0 to build a retirement planning advisor"
+/kb-first              # Start interactive builder
+/kb-first init         # Initialize in current project
+/kb-first score        # Score existing KB and app
+/kb-first verify       # Run verification checks
+/kb-first hooks        # Configure hooks
 ```
 
 ---
@@ -424,15 +553,21 @@ Then tell Claude:
 ## 📁 Repository Structure
 
 ```
-kb-first-v41/
+kb-first-v43/
 ├── README.md                     # This file
-├── SKILL.md                      # Main skill documentation (v4.1)
+├── SKILL.md                      # Main skill documentation (v4.3)
 ├── .github/
 │   └── workflows/
 │       └── kb-first-ci.yml       # CI/CD quality gates
+├── install/                      # Installation scripts
+│   ├── install-global.sh         # Global skill installation
+│   ├── init-project.sh           # Project-level initialization
+│   ├── kb-first-skill.md         # Skill file for ~/.claude/skills/
+│   └── kb-first-command.md       # Command file for ~/.claude/commands/
 ├── phases/                       # Phase-by-phase instructions
 │   ├── 00-assessment.md          # Greenfield + Brownfield assessment
-│   ├── 01-storage.md
+│   ├── 01-storage.md             # PostgreSQL + ruvector setup
+│   ├── 01.5-hooks-setup.md       # RuVector hooks configuration
 │   ├── 02-kb-creation.md
 │   ├── 03-persistence.md
 │   ├── 04-visualization.md
@@ -440,6 +575,9 @@ kb-first-v41/
 │   ├── 06-scaffold.md
 │   ├── 07-build.md
 │   ├── 08-verification.md        # 8 numbered sub-phases (8.1-8.8)
+│   ├── 09-security.md            # Security audit & hardening
+│   ├── 10-documentation.md       # Docs & versioning
+│   ├── 11-deployment.md          # Production deployment
 │   └── testing.md                # Comprehensive testing strategy
 ├── patterns/                     # Intelligence pattern guides
 │   ├── decision-web.md           # GNN-first pattern
@@ -460,6 +598,7 @@ kb-first-v41/
 │   ├── completeness-audit.md
 │   └── quality-critique.md
 ├── scripts/                      # Verification scripts
+│   ├── 1.5-hooks-verify.sh       # Hook verification suite
 │   ├── 8.1-code-scan.sh          # No hardcoded values
 │   ├── 8.2-import-check.sh       # KB imports required
 │   ├── 8.3-source-returns.sh     # kbSources in returns
@@ -468,6 +607,7 @@ kb-first-v41/
 │   ├── 8.6-attribution.sh        # Expert attribution
 │   ├── 8.7-confidence.sh         # Confidence scores
 │   ├── 8.8-gap-logging.sh        # Gap detection
+│   ├── 9-security-audit.sh       # Security verification suite
 │   ├── init-project.sh           # Project initialization
 │   └── verify-enforcement.sh     # Full enforcement check
 ├── references/                   # Technical references

@@ -1,53 +1,87 @@
 {
-  "name": "ruvnet-kb-app-builder",
-  "version": "1.0.0",
-  "description": "KB-First Application Builder with GNN, Attention Routing, SONA, and Vector Search",
+  "name": "ruvnet-kb-first",
+  "version": "6.3.0",
+  "description": "RuvNet KB-First Application Builder - Build intelligent applications on expert knowledge",
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.js",
+  "bin": {
+    "ruvnet-kb-first": "./bin/kb-first.js",
+    "kb-first": "./bin/kb-first.js"
+  },
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
+    "start": "node bin/kb-first.js",
+    "mcp": "node src/mcp-server.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "lint": "eslint templates/**/*.ts",
-    "kb:init": "node scripts/init-kb.js",
-    "kb:status": "node scripts/kb-status.js"
+    "lint": "eslint src/ templates/",
+    "kb:init": "node bin/kb-first.js init",
+    "kb:score": "node bin/kb-first.js score",
+    "kb:verify": "node bin/kb-first.js verify",
+    "kb:status": "node bin/kb-first.js status",
+    "prepublishOnly": "echo 'Publishing ruvnet-kb-first...'"
   },
   "keywords": [
+    "kb-first",
     "knowledge-base",
+    "claude",
+    "claude-code",
     "gnn",
     "graph-neural-network",
     "attention-routing",
     "sona",
     "vector-search",
-    "federated-learning",
-    "ai-agents"
+    "mcp",
+    "mcp-server",
+    "ai-agents",
+    "expert-system",
+    "ruvector"
   ],
   "author": "rUv",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ruvnet/kb-first-builder.git"
+  },
+  "homepage": "https://github.com/ruvnet/kb-first-builder#readme",
+  "bugs": {
+    "url": "https://github.com/ruvnet/kb-first-builder/issues"
+  },
   "dependencies": {
     "agentic-flow": "^2.0.1-alpha.43",
+    "chalk": "^5.3.0",
     "claude-flow": "^2.7.47",
+    "commander": "^12.0.0",
+    "dotenv": "^16.3.0",
+    "glob": "^10.3.0",
+    "inquirer": "^9.2.0",
+    "ora": "^8.0.0",
+    "pg": "^8.16.3",
     "ruv-swarm": "^1.0.20",
-    "ruvector": "^0.1.82",
-    "pg": "^8.11.3"
+    "ruvector": "^0.1.82"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.11",
     "@types/node": "^20.10.0",
     "@types/pg": "^8.10.9",
-    "typescript": "^5.3.0",
-    "eslint": "^8.55.0",
     "@typescript-eslint/eslint-plugin": "^6.13.0",
     "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^8.55.0",
     "jest": "^29.7.0",
-    "@types/jest": "^29.5.11"
+    "typescript": "^5.3.0"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=18.0.0"
   },
   "files": [
-    "dist",
-    "templates",
-    "README.md"
+    "bin/",
+    "src/",
+    "dist/",
+    "phases/",
+    "templates/",
+    "scripts/",
+    "install/",
+    "README.md",
+    "SKILL.md"
   ]
 }

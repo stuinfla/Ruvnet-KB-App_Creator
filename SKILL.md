@@ -1,58 +1,237 @@
-Updated: 2026-01-01 20:45:00 EST | Version 4.1.0
+Updated: 2026-01-02 10:35:00 EST | Version 6.2.0
 Created: 2026-01-01 15:00:00 EST
 
-# KB-First Application Builder v4.1
+# RuvNet KB-First Application Builder v6.2
 
-## Intelligence-First Architecture for Knowledge Applications
+## Score-Driven Architecture: Scoring IS Enforcement + UX Excellence
 
-**Version:** 4.1.0
-**Purpose:** Build applications where curated expert knowledge drives intelligent decision-making through GNN reasoning, attention routing, and SONA learning.
-
----
-
-## What's New in v4.1
-
-| Feature | Description |
-|---------|-------------|
-| **Greenfield Support** | Full workflow for new projects via PROJECT_INTENTIONS.md |
-| **Interactive Discovery** | Structured questions when no intentions file exists |
-| **IS/SHOULD/COULD Analysis** | Present vision to user before execution |
-| **User Feedback Loop** | Mandatory feedback before proceeding |
-| **CI/CD Pipeline** | GitHub Actions workflow for quality gates |
-| **Verification Scripts** | 8 executable scripts (8.1-8.8) for Phase 8 |
-
-## What's in v4.0
-
-| Feature | Description |
-|---------|-------------|
-| **Phase 0: Assessment** | Mandatory scoring before any changes |
-| **Hard Gates** | DO NOT PROCEED enforcement at every phase boundary |
-| **Scoring Formulas** | Explicit 0-100 scoring for KB quality and app compliance |
-| **Swarm Integration** | Parallel execution configuration for all phases |
-| **Delta Tracking** | Before/after comparison with transformation report |
-| **Phase 8 Sub-Phases** | 8 numbered verification checks (8.1-8.8) |
+**Version:** 6.2.0
+**NPM Package:** `ruvnet-kb-first`
+**Philosophy:** Every operation requires baseline scoring. Every change shows delta. Negative delta BLOCKS progress. No shortcuts. **NEW:** Applications must be excellent, not just functional.
 
 ---
 
-## How to Use This Skill
+## What's New in v6.2.0 - UX Excellence
 
-When you invoke this skill, Claude will:
+| Feature | Description |
+|---------|-------------|
+| **UX Quality Dimension** | 7th KB dimension: Visual design, emotional appeal, user flow |
+| **Phase 12: UX Quality Review** | Playwright-based end-user perspective audit |
+| **`kb_first_ux_review` Tool** | Captures screenshots, checks versioning, critical review |
+| **Version Display Check** | Verifies version in header/footer (major.minor.patch) |
+| **Cache-Busting Check** | Ensures users see latest version, not cached content |
+| **Critical Review Questions** | How good? How could it be better? Where falling down? What would excellent look like? |
+| **Playwright Auto-Install** | Offers to install Playwright if not present |
 
-1. **Detect** application type (greenfield vs brownfield)
-2. **Score** existing KB and app compliance (brownfield only)
-3. **Confirm** transformation scope with user (brownfield only)
-4. **Identify** which intelligence pattern fits
-5. **Execute** the 9-phase build process with HARD quality gates
-6. **Enforce** KB-First rules throughout development
-7. **Verify** all 8 verification sub-phases pass
-8. **Report** delta (before/after scores)
+### The 6 MCP Tools (v6.2)
 
-**Trigger phrases:**
-- "Build [description] with KB-First" (greenfield)
-- "Apply KB-First to my existing app" (brownfield)
-- "Score my existing KB"
-- "What's my app compliance score?"
-- "/kb-first" (invoke skill directly)
+| Tool | Purpose | When to Use |
+|------|---------|-------------|
+| `kb_first_assess` | Score ALL dimensions (7 KB + 13 Phases) | **FIRST** - before any work |
+| `kb_first_plan` | Generate enhancement plan with predictions | After assess, shows gaps |
+| `kb_first_confirm` | User confirms readiness to proceed | Before execution |
+| `kb_first_execute` | Execute plan phase by phase | After confirmation |
+| `kb_first_verify` | Compare predicted vs actual, recursive until 98+ | After execution |
+| `kb_first_ux_review` | Playwright-based visual quality audit | **NEW** - for UX excellence |
+
+### UX Quality Criteria (Scored in UX Review)
+
+| Criterion | Weight | Checks |
+|-----------|--------|--------|
+| Version Display | 15% | Header/footer shows major.minor.patch |
+| Cache Management | 10% | Version change detection, user notification |
+| Visual Design Excellence | 20% | Typography, color, spacing, not generic AI look |
+| Emotional Appeal | 15% | Creates confidence, celebrates success, softens errors |
+| Loading States | 10% | Skeleton loaders, progress indicators, graceful |
+| Error Handling UX | 10% | Clear messages, actionable, no technical jargon |
+| User Flow | 10% | Intuitive navigation, clear CTAs, minimal friction |
+| Accessibility | 10% | Keyboard nav, screen reader, contrast, focus |
+
+---
+
+## What's New in v6.0 - BREAKING CHANGES
+
+| Feature | Description |
+|---------|-------------|
+| **Score-Driven Architecture** | Scoring is THE enforcement mechanism, not just a metric |
+| **4 MCP Tools** | Simplified from 7 CLI commands to 4 focused MCP tools |
+| **Delta Enforcement** | Every phase requires before/after comparison |
+| **Hard Gate Blocking** | Negative score delta BLOCKS progress - no bypass |
+| **Baseline Requirement** | Cannot start work without establishing baseline |
+| **Automatic Refresh** | Baseline resets after each gate passage |
+
+### The Original 4 MCP Tools (v6.0)
+
+| Tool | Purpose | When to Use |
+|------|---------|-------------|
+| `kb_first_assess` | Calculate baseline scores | **FIRST** - before any work |
+| `kb_first_phase` | Get phase guidance with baseline | After assess, shows tasks |
+| `kb_first_delta` | Compare current vs baseline | After work, shows improvement |
+| `kb_first_gate` | Hard gate - blocks on regression | When ready to proceed |
+
+### The Score-Driven Workflow
+
+```
+1. kb_first_assess → Establishes baseline (saves to .ruvector/baseline.json)
+2. kb_first_phase  → Get phase tasks, see baseline reminder
+3. [Do the work]
+4. kb_first_delta  → Compare scores, PASS if delta ≥ 0, FAIL if < 0
+5. kb_first_gate   → Verify gate, proceed OR blocked
+6. REPEAT from step 1 for next phase
+```
+
+### Quick Start (MCP Only)
+
+Add to your Claude Code settings:
+
+```json
+{
+  "mcpServers": {
+    "ruvnet-kb-first": {
+      "command": "npx",
+      "args": ["ruvnet-kb-first", "mcp"]
+    }
+  }
+}
+```
+
+Then use the tools:
+```
+kb_first_assess      # Start here - get your baseline
+kb_first_phase 0     # Get Phase 0 (Assessment) guidance
+# ... do the work ...
+kb_first_delta       # Check your improvement
+kb_first_gate 0      # Pass gate, move to Phase 1
+```
+
+---
+
+## Scoring Formula (100 Points Total)
+
+### KB Score (40 points)
+| Component | Points | Measurement |
+|-----------|--------|-------------|
+| Entries | 10 | KB has content (2 pts per 5 entries) |
+| Coverage | 10 | Domain docs exist (2 pts per doc) |
+| Embeddings | 10 | Vectors generated |
+| Freshness | 10 | Updated within 24h=10, 7d=7, 30d=4 |
+
+### App Score (40 points)
+| Component | Points | Measurement |
+|-----------|--------|-------------|
+| KB Citations | 15 | Code files cite KB sources |
+| Gap Resolution | 10 | 10 - (unresolved gaps) |
+| Test Coverage | 10 | Tests exist and pass |
+| Security | 5 | .gitignore excludes .env |
+
+### Process Score (20 points)
+| Component | Points | Measurement |
+|-----------|--------|-------------|
+| Phase Completion | 10 | % of phases completed |
+| Gates Passed | 5 | % of gates verified |
+| Documentation | 5 | README, API docs, architecture |
+
+---
+
+## How It Works
+
+### 1. `kb_first_assess` - Establish Baseline
+
+**ALWAYS RUN FIRST.** Returns:
+```json
+{
+  "action": "BASELINE_ESTABLISHED",
+  "total": 47,
+  "grade": "D",
+  "summary": { "kb": "12/40", "app": "25/40", "process": "10/20" },
+  "breakdown": { ... component details ... }
+}
+```
+
+### 2. `kb_first_phase` - Get Phase Guidance
+
+**Shows phase tasks and reminds you of baseline:**
+```json
+{
+  "phase": 3,
+  "name": "KB Population",
+  "baseline": { "score": 47, "grade": "D" },
+  "tasks": ["Collect domain content", "Generate embeddings", ...],
+  "reminder": "⚠️ Run kb_first_delta when complete"
+}
+```
+
+### 3. `kb_first_delta` - Measure Improvement
+
+**THE ENFORCEMENT MECHANISM:**
+```json
+{
+  "verdict": "PASS",
+  "canProceed": true,
+  "baseline": { "score": 47 },
+  "current": { "score": 62 },
+  "delta": { "total": "+15", "kb": "+10", "app": "+3", "process": "+2" }
+}
+```
+
+Or if regression:
+```json
+{
+  "verdict": "FAIL",
+  "canProceed": false,
+  "delta": { "total": "-3" },
+  "blockReason": "Score dropped by 3 points. You CANNOT proceed until score improves."
+}
+```
+
+### 4. `kb_first_gate` - Pass or Block
+
+**Hard gate that enforces progress:**
+```json
+{
+  "canProceed": true,
+  "gateStatus": "PASSED",
+  "scoreImprovement": "+15",
+  "nextPhase": 4,
+  "nextPhaseName": "Scoring & Gaps"
+}
+```
+
+Or if blocked:
+```json
+{
+  "canProceed": false,
+  "blockReason": "GATE_BLOCKED: Score regression detected (-3 points)."
+}
+```
+
+---
+
+## Why Score-Driven?
+
+> "When you just stare at something, you take shortcuts."
+
+The previous version (v5.0) had 7 CLI commands, a skill file, a command file, and an MCP server. **Too much complexity, not enough rigor.**
+
+v6.0 simplifies to:
+- **One interface:** MCP server with 4 tools
+- **One enforcement mechanism:** Scoring with delta comparison
+- **One rule:** No negative deltas allowed
+
+This prevents:
+- Skipping phases
+- Claiming "good enough" without measurement
+- Forgetting to verify improvements
+- Proceeding with regressions
+
+---
+
+## Trigger Phrases
+
+- "Score my project" → `kb_first_assess`
+- "What phase am I on?" → `kb_first_phase`
+- "Did I improve?" → `kb_first_delta`
+- "Can I proceed?" → `kb_first_gate`
 
 ---
 
@@ -199,7 +378,8 @@ Every KB-First application is built through these phases with HARD quality gates
 | Phase | Name | Sub-Phases | Gate Type |
 |-------|------|------------|-----------|
 | 0 | Assessment | 6 | ⛔ User Confirmation |
-| 1 | Storage | - | Script Check |
+| 1 | Storage | 6 | Script Check |
+| 1.5 | Hooks Setup | 4 | Hook Verify |
 | 2 | KB Creation | 8 | Score ≥98 |
 | 3 | Persistence | - | SQL Check |
 | 4 | Visualization | - | Manual/Playwright |
@@ -207,8 +387,11 @@ Every KB-First application is built through these phases with HARD quality gates
 | 6 | Scaffold | - | File Check |
 | 7 | Build | 7 | Script Check |
 | 8 | Verification | 8 | All Must Pass |
+| 9 | Security | 6 | Security Audit |
+| 10 | Documentation | 6 | Docs Complete |
+| 11 | Deployment | 6 | Go-Live Check |
 
-**Total Sub-Phases:** 29
+**Total Sub-Phases:** 57
 
 ---
 
@@ -261,6 +444,38 @@ psql "$DATABASE_URL" -f templates/schema.sql
 **Quality Gate:** ✅ Connection verified, schema created.
 
 **Detailed instructions:** `./phases/01-storage.md`
+
+---
+
+### Phase 1.5: Hooks Setup
+
+**Purpose:** Configure Claude Code hooks for automatic KB enforcement.
+
+**⛔ CRITICAL: Without hooks, KB-First is an honor system.**
+
+| Sub-Phase | Name | Purpose |
+|-----------|------|---------|
+| 1.5.1 | Install Hooks | Install RuVector hook scripts |
+| 1.5.2 | Configure Settings | Update ~/.claude/settings.json |
+| 1.5.3 | Pre-train ReasoningBank | Seed KB-First patterns |
+| 1.5.4 | Verify Functionality | Test hooks fire correctly |
+
+**Quick Setup:**
+```bash
+# Install and configure hooks
+npx @ruvector/cli hooks init
+npx @ruvector/cli hooks install
+
+# Pre-train with KB-First patterns
+npx @ruvector/cli reasoningbank seed --kb-first
+
+# Verify
+./scripts/1.5-hooks-verify.sh
+```
+
+**Quality Gate:** ✅ All checks pass in `./scripts/1.5-hooks-verify.sh`
+
+**Detailed instructions:** `./phases/01.5-hooks-setup.md`
 
 ---
 
@@ -452,6 +667,68 @@ RULE 5: No fallback logic
 **Quality Gate:** ✅ All checks pass.
 
 **Detailed instructions:** `./phases/08-verification.md`
+
+---
+
+### Phase 9: Security Audit
+
+**Purpose:** Ensure the application has no security vulnerabilities before production.
+
+| Sub-Phase | Name | Purpose |
+|-----------|------|---------|
+| 9.1 | Dependency Audit | Check for vulnerable packages |
+| 9.2 | OWASP Top 10 | Common vulnerability scan |
+| 9.3 | SQL Injection | Verify parameterized queries |
+| 9.4 | Auth & Authz | Verify access controls |
+| 9.5 | Secrets | No hardcoded secrets |
+| 9.6 | API Security | Rate limiting, CORS, validation |
+
+**Quick Check:**
+```bash
+./scripts/9-security-audit.sh
+```
+
+**Quality Gate:** ✅ Security audit passes with 0 critical/high issues.
+
+**Detailed instructions:** `./phases/09-security.md`
+
+---
+
+### Phase 10: Documentation & Versioning
+
+**Purpose:** Complete documentation and proper versioning before production.
+
+| Sub-Phase | Name | Purpose |
+|-----------|------|---------|
+| 10.1 | README | Complete project overview |
+| 10.2 | API Docs | OpenAPI/Swagger specification |
+| 10.3 | KB Schema | Knowledge base structure docs |
+| 10.4 | Architecture | System design and diagrams |
+| 10.5 | Operator Guide | Deployment and operations |
+| 10.6 | Versioning | SemVer, changelog, releases |
+
+**Quality Gate:** ✅ All documentation complete and accurate.
+
+**Detailed instructions:** `./phases/10-documentation.md`
+
+---
+
+### Phase 11: Deployment Planning
+
+**Purpose:** Deploy to production with public access.
+
+| Sub-Phase | Name | Purpose |
+|-----------|------|---------|
+| 11.1 | Infrastructure | Select and provision hosting |
+| 11.2 | Environment | Production configuration |
+| 11.3 | CI/CD | Automated deployment pipeline |
+| 11.4 | Database | Production DB setup/migration |
+| 11.5 | Monitoring | Observability and alerting |
+| 11.6 | Go-Live | Final verification and launch |
+
+**Quality Gate:** ✅ Application live with monitoring active.
+
+**Detailed instructions:** `./phases/11-deployment.md`
 
 ---
 
