@@ -4,14 +4,14 @@
  * Loads the embedded knowledge base into RvLite WASM.
  * Provides semantic search with ~5ms latency.
  *
- * Content Hash: 62117666416c8c6e
- * Generated: 2026-01-02T18:51:15.858Z
+ * Content Hash: 004c720e1d38de27
+ * Generated: 2026-01-02T18:55:18.300Z
  * Entries: 17,524
  */
 
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath, pathToFileURL } from 'url';
+import { fileURLToPath } from 'url';
 
 // Initialize WASM on first import
 let wasmInitialized = false;
@@ -22,9 +22,24 @@ async function ensureWasmInit() {
     // Dynamic import to get the init function
     const rvliteModule = await import('@ruvector/edge-full/rvlite');
 
-    // Get the wasm file path
-    const rvlitePath = path.dirname(fileURLToPath(import.meta.resolve('@ruvector/edge-full/rvlite')));
-    const wasmPath = path.join(rvlitePath, 'rvlite_bg.wasm');
+    // Find the WASM file by walking up from this file to find node_modules
+    const __dirname = path.dirname(fileURLToPath(import.meta.url));
+    let searchDir = __dirname;
+    let wasmPath = null;
+
+    // Search for node_modules in parent directories
+    while (searchDir !== path.dirname(searchDir)) {
+      const candidatePath = path.join(searchDir, 'node_modules', '@ruvector', 'edge-full', 'rvlite', 'rvlite_bg.wasm');
+      if (fs.existsSync(candidatePath)) {
+        wasmPath = candidatePath;
+        break;
+      }
+      searchDir = path.dirname(searchDir);
+    }
+
+    if (!wasmPath) {
+      throw new Error('Could not find rvlite_bg.wasm in node_modules');
+    }
 
     // Read the wasm file and pass as buffer (Node.js compatible)
     const wasmBuffer = fs.readFileSync(wasmPath);
@@ -44,8 +59,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // KB Version Info
 export const KB_VERSION = {
-  hash: '62117666416c8c6e',
-  exportedAt: '2026-01-02T18:51:15.858Z',
+  hash: '004c720e1d38de27',
+  exportedAt: '2026-01-02T18:55:18.300Z',
   totalEntries: 17524,
   embeddingDim: 384,
   quantization: 'binary',

@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "schema": "ask_ruvnet",
-  "exportedAt": "2026-01-02T18:51:15.858Z",
+  "exportedAt": "2026-01-02T18:55:18.300Z",
   "totalEntries": 17524,
   "embeddingDim": 384,
   "quantization": "binary",
@@ -67,5 +67,5 @@
       "count": 14
     }
   ],
-  "contentHash": "62117666416c8c6e"
+  "contentHash": "004c720e1d38de27"
 }

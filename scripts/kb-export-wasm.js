@@ -122,7 +122,6 @@ async function exportKB(schema, outputDir) {
     const entries = [];
     const embeddings = [];
     let offset = 0;
-    let hashInput = '';
 
     console.log(`\n   Exporting chunks...`);
 
@@ -155,9 +154,6 @@ async function exportKB(schema, outputDir) {
         } else {
           embeddings.push(new Float32Array(embeddingArray));
         }
-
-        // Add to hash input
-        hashInput += `${row.id}:${row.title}:${row.category}|`;
       }
 
       offset += CONFIG.export.chunkSize;
@@ -167,8 +163,13 @@ async function exportKB(schema, outputDir) {
 
     console.log('\n');
 
-    // Compute content hash
-    metadata.contentHash = crypto.createHash('sha256').update(hashInput).digest('hex').substring(0, 16);
+    // Compute content hash using MD5 (matches PostgreSQL checkForUpdates query)
+    const hashResult = await client.query(`
+      SELECT MD5(STRING_AGG(id::text || ':' || title || ':' || category, '|' ORDER BY id))::text as hash
+      FROM ${schema}.architecture_docs
+      WHERE embedding IS NOT NULL AND is_duplicate = false
+    `);
+    metadata.contentHash = hashResult.rows[0]?.hash?.substring(0, 16) || 'unknown';
     console.log(`   Content Hash: ${metadata.contentHash}`);
 
     // Write metadata
